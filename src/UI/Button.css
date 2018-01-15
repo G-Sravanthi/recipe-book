@@ -1,0 +1,12 @@
+.Button {
+  cursor: pointer;
+  background: #F2F2F2;
+  border: 1px solid #363636;
+  color: #363636;
+  width: 120px;
+  border-radius: 10px;
+  font: inherit;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em;
+}

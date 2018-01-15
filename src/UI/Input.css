@@ -1,0 +1,14 @@
+.Input {
+  background: #BCBCBC;
+  text-align: center;
+  width: 80%;
+  height: 30px;
+  margin: 2vh auto;
+  display: block;
+  border: 1px solid #363636;
+  border-radius: 10px;
+}
+.Input:focus{
+  border: 1px solid #D11A3B;
+  outline: none;
+}

@@ -1,7 +1,9 @@
 .Input {
   background: #BCBCBC;
-  text-align: center;
-  width: 80%;
+  text-align: left;
+  padding: 2px 5px;
+  font-size: 14px;
+  width: 60%;
   height: 30px;
   margin: 2vh auto;
   display: block;
@@ -9,6 +11,38 @@
   border-radius: 10px;
 }
 .Input:focus{
+  border: 1px solid #D11A3B;
+  outline: none;
+}
+
+.TextArea{
+  background: #BCBCBC;
+  text-align: left;
+  padding: 2px 5px;
+  font-size: 14px;
+  width: 60%;
+  height: 120px;
+  margin: 2vh auto;
+  display: block;
+  border: 1px solid #363636;
+  border-radius: 10px;
+}
+.TextArea:focus{
+  outline: none;
+}
+
+.Select {
+  font-size: 14px;
+  background: #BCBCBC;
+  text-align: center;
+  width: 30%;
+  height: 40px;
+  margin: 2vh auto;
+  display: block;
+  border: 1px solid #363636;
+  border-radius: 10px;
+}
+.Select:focus{
   border: 1px solid #D11A3B;
   outline: none;
 }

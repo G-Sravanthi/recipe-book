@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import classes from './Layout.css'
 import Aux from '../HOC/Aux'
 
 

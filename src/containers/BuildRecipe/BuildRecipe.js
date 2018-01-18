@@ -9,10 +9,11 @@ class BuildRecipe extends Component {
   state = {
     recipe: {
       ready: [
-        {name: 'name', value: true},
-        {name: 'ingredient', value: false},
-        {name: 'directions', value: false},
-        {name: 'prepInfo', value: false},
+        {name: 'name', value: true, finished: false},
+        {name: 'ingredients', value: false, finished: false},
+        {name: 'directions', value: false, finished: false},
+        {name: 'prepInfo', value: false, finished: false},
+        {name: 'complete', value: false, finished: false}
       ],
       name: {
         tag: 'input',
@@ -230,29 +231,28 @@ class BuildRecipe extends Component {
     let savedRecipe = {
       ...this.state.recipe
     }
-    let readyArray = {
-      ...this.state.recipe.ready
-    }
-    for(let i=0; i < readyArray.length; i++) {
-      if(readyArray[i].name === field) {
-        readyArray[i].value = true
+    for(let i=0; i < savedRecipe.ready.length; i++) {
+      if(savedRecipe.ready[i].name === field) {
+        savedRecipe.ready[i].value = false
+        savedRecipe.ready[i].finished = true
+        savedRecipe.ready[i + 1].value = true
       }
     }
-    savedRecipe.ready = readyArray
     this.setState({recipe: savedRecipe})
+    console.log(this.state.recipe);
   }
 
-  addInfoHandler = (event, fields, id) => {
-    fields.map((field) => {
-      let savedRecipe = {
-        ...this.state.recipe
-      }
-      field.touched = true
-      field.finished = true
+  addInfoHandler = (event, information, fields, id) => {
+    let savedRecipe = {
+      ...this.state.recipe[id]
+    }
+    let component = {
+      ...this.state.component
+    }
+    fields.map((field, index) => {
       field.list.push(field.value)
-      savedRecipe[id] = field
+      savedRecipe.fields[index] = field
       this.setState({recipe: savedRecipe})
-      console.log(this.state);
     })
   }
 
@@ -284,7 +284,7 @@ class BuildRecipe extends Component {
     let form = (
       <form onSubmit={this.recipeHandler}>
         {recipeInfo.map((item, index) => {
-          if (item.id === 'name') {
+          if (item.id === 'name' && this.state.recipe.ready[0].value && !this.state.recipe.ready[0].finished) {
             return (<Aux key={item.id}>
               <Input
                 key={item.id}
@@ -292,7 +292,6 @@ class BuildRecipe extends Component {
                 config={item.information.config}
                 value={item.information.value}
                 changed={(event) => this.nameChangeHandler(event, item.id)}
-                done={(event)=>this.continueFormHandler(event, item.id)}
                 >
                   {item.information.config.placeholder}
               </Input>
@@ -308,10 +307,8 @@ class BuildRecipe extends Component {
               </div>
             </Aux>)
           }
-          if (item.id === 'ingredients') {
-            console.log(this.state.recipe.ingredients.fields[2].finished);
+          if (item.id === 'ingredients' && this.state.recipe.ready[1].value && !this.state.recipe.ready[1].finished) {
             return (<Aux key={item.id}>
-              <h2>{this.state.recipe.name.value}</h2>
               <Input
                 key={item.id}
                 tag={item.information.tag}
@@ -327,18 +324,19 @@ class BuildRecipe extends Component {
               }}>
                 <button
                   type='button'
-                  onClick={(event) => this.addInfoHandler(event, item.information.fields, item.id)}>
+                  onClick={(event) => this.addInfoHandler(event, item.information, item.information.fields, item.id)}>
                   Add Ingredient
                 </button>
                 <button
-                  type='button'
-                  >
+                  onClick={(event)=>this.continueFormHandler(event,item.id)}
+                  type='button'>
                   Save Ingredients
                 </button>
               </div>
             </Aux>)
           }
-          if (item.id === 'directions') {
+          if (item.id === 'directions' && this.state.recipe.ready[2].value && !this.state.recipe.ready[2].finished) {
+            console.log('directions', this.state.recipe.ready[2].value);
             return (<Aux key={item.id}>
               <Input
                 key={item.id}
@@ -359,14 +357,15 @@ class BuildRecipe extends Component {
                   Add Ingredient
                 </button>
                 <button
-                  type='button'
-                  >
-                  Save Ingredients
+                  onClick={(event)=>this.continueFormHandler(event,item.id)}
+                  type='button'>
+                  Save Directions
                 </button>
               </div>
             </Aux>)
           }
-          if (item.id === 'prepInfo') {
+          if (item.id === 'prepInfo' && this.state.recipe.ready[3].value && !this.state.recipe.ready[3].finished) {
+            console.log('prepInfo', this.state.recipe.ready[3].value);
             return (<Aux key={item.id}>
               <Input
                 key={item.id}
@@ -381,16 +380,11 @@ class BuildRecipe extends Component {
                 textAlign: 'center',
                 width: '100%'
               }}>
-                <button
-                  type='button'
-                  onClick={(event) => this.addInfoHandler(event, item.information.fields, item.id)}>
-                  Add Ingredient
-                </button>
-                <button
-                  type='button'
-                  >
-                  Save Ingredients
-                </button>
+              <button
+                onClick={(event)=>this.continueFormHandler(event,item.id)}
+                type='button'>
+                Save Times
+              </button>
               </div>
             </Aux>)
           }

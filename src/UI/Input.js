@@ -6,47 +6,6 @@ const input = (props) => {
   let element = null
 
   switch (props.tag) {
-  case ('input'):
-    element = (
-      <Aux>
-        <input
-          className={classes.Input}
-          onChange= {props.changed}
-          value={props.value}
-          placeholder={props.children}
-        />
-      </Aux>
-    )
-  break;
-  case ('select'):
-    element = (
-      <select
-        className={classes.Select}
-        onChange={props.changed}
-        value={props.value}
-      >
-        {props.config.options.map((option) => {
-          return (
-            <option key={option.value} value={option.value}>
-              {option.display}
-            </option>
-          )
-        })}
-      </select>
-    )
-  break;
-  case ('textarea'):
-      element = (
-        <Aux>
-          <textarea
-            className={classes.Input}
-            onChange= {props.changed}
-            value={props.value}
-            placeholder={props.children}
-          />
-        </Aux>
-      )
-    break;
     case ('multiple'):
         element = (
           <Aux>
@@ -60,6 +19,15 @@ const input = (props) => {
                   placeholder={item.name}
                 />)
               }
+              if (item.tag === 'textarea') {
+               return (<textarea
+                 key={item.name}
+                 className={classes.Input}
+                 onChange= {(e) => props.changed(e, index)}
+                 value={props.value}
+                 placeholder={item.name}
+               />)
+             }
               if (item.tag === 'select') {
                 return (<select
                     key={item.name}
@@ -88,7 +56,8 @@ const input = (props) => {
           value={props.value}
           placeholder={props.children}
         />
-      </Aux>)
+      </Aux>
+    )
   }
 
   return (

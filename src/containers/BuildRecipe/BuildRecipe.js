@@ -8,6 +8,12 @@ import Spinner from '../../UI/Spinner'
 class BuildRecipe extends Component {
   state = {
     recipe: {
+      ready: [
+        {name: 'name', value: true},
+        {name: 'ingredient', value: false},
+        {name: 'directions', value: false},
+        {name: 'prepInfo', value: false},
+      ],
       name: {
         tag: 'input',
         config: {
@@ -20,7 +26,6 @@ class BuildRecipe extends Component {
         },
         valid: false,
         touched: false,
-        finished: false
       },
       ingredients: {
         tag: 'multiple',
@@ -39,8 +44,7 @@ class BuildRecipe extends Component {
              minListLength: 3
            },
            valid: false,
-           touched: false,
-           finished: false
+           touched: false
          },
          {
            name: 'amount',
@@ -55,8 +59,7 @@ class BuildRecipe extends Component {
              require: true
            },
            valid: false,
-           touched: false,
-           finished: false
+           touched: false
          },
          {
            name: 'measurement',
@@ -82,8 +85,7 @@ class BuildRecipe extends Component {
              require: true
            },
            valid: true,
-           touched: true,
-           finished: false
+           touched: true
          }
         ]
       },
@@ -104,8 +106,7 @@ class BuildRecipe extends Component {
               minListLength: 3
             },
             valid: false,
-            touched: false,
-            finished: false
+            touched: false
           },
           {
             name: 'designation',
@@ -124,8 +125,7 @@ class BuildRecipe extends Component {
               require: true
             },
             valid: true,
-            touched: true,
-            finished: false
+            touched: true
           }
         ]
       },
@@ -196,11 +196,6 @@ class BuildRecipe extends Component {
     valid: true,
     send: false,
     loading: false,
-    finished: {
-      name: false,
-      measurement: false,
-      designation: false
-    }
   }
 
   nameChangeHandler = (event, field) => {
@@ -235,16 +230,15 @@ class BuildRecipe extends Component {
     let savedRecipe = {
       ...this.state.recipe
     }
-    let touched = {
-      ...this.state.recipe[field].touched
+    let readyArray = {
+      ...this.state.recipe.ready
     }
-    let finished = {
-      ...this.state.recipe[field].finished
+    for(let i=0; i < readyArray.length; i++) {
+      if(readyArray[i].name === field) {
+        readyArray[i].value = true
+      }
     }
-    finished = true
-    touched = true
-    savedRecipe[field].touched = touched
-    savedRecipe[field].finished = finished
+    savedRecipe.ready = readyArray
     this.setState({recipe: savedRecipe})
   }
 
@@ -289,8 +283,8 @@ class BuildRecipe extends Component {
     }
     let form = (
       <form onSubmit={this.recipeHandler}>
-        {recipeInfo.map((item) => {
-          if (item.id === 'name' && !item.information.touched) {
+        {recipeInfo.map((item, index) => {
+          if (item.id === 'name') {
             return (<Aux key={item.id}>
               <Input
                 key={item.id}
@@ -314,7 +308,7 @@ class BuildRecipe extends Component {
               </div>
             </Aux>)
           }
-          if (item.id === 'ingredients' && this.state.recipe.name.finished) {
+          if (item.id === 'ingredients') {
             console.log(this.state.recipe.ingredients.fields[2].finished);
             return (<Aux key={item.id}>
               <h2>{this.state.recipe.name.value}</h2>
@@ -344,7 +338,7 @@ class BuildRecipe extends Component {
               </div>
             </Aux>)
           }
-          if (item.id === 'directions' && !item.information.fields[1].finished ) {
+          if (item.id === 'directions') {
             return (<Aux key={item.id}>
               <Input
                 key={item.id}
@@ -372,23 +366,30 @@ class BuildRecipe extends Component {
               </div>
             </Aux>)
           }
-          if (item.id === 'prep' && !item.information.touched && this.state.finished.designation) {
+          if (item.id === 'prepInfo') {
             return (<Aux key={item.id}>
               <Input
+                key={item.id}
                 tag={item.information.tag}
-                config={item.information.config}
-                value={item.information.value}
-                changed={(event) => this.inputChangehandler(event,item.id)}
+                config={item.information.fields}
+                changed={(event, index) => this.multipleChangehandler(event,index, item.id)}
+                information={item.information.fields}
                 >
-                  {item.information.config.placeholder}
+                  {item.information.fields}
               </Input>
               <div  style={{
                 textAlign: 'center',
                 width: '100%'
               }}>
                 <button
-                  type='button'>
-                  Add Prep Time
+                  type='button'
+                  onClick={(event) => this.addInfoHandler(event, item.information.fields, item.id)}>
+                  Add Ingredient
+                </button>
+                <button
+                  type='button'
+                  >
+                  Save Ingredients
                 </button>
               </div>
             </Aux>)

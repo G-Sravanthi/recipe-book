@@ -203,7 +203,20 @@ class BuildRecipe extends Component {
     }
   }
 
-  inputChangehandler = (event, index, field) => {
+  nameChangeHandler = (event, field) => {
+    let newRecipe = {
+      ...this.state.recipe
+    }
+    let newElement = {
+      ...this.state.recipe[field]
+    }
+    newElement.value = event.target.value
+    newRecipe[field] = newElement
+    this.setState({recipe: newRecipe})
+    console.log(this.state.recipe.name);
+  }
+
+  multipleChangehandler = (event, index, field) => {
     console.log(event, index, field);
     let newRecipe = {
       ...this.state.recipe
@@ -273,8 +286,8 @@ class BuildRecipe extends Component {
                 tag={item.information.tag}
                 config={item.information.config}
                 value={item.information.value}
-                changed={(event) => this.inputChangehandler(event,item.id)}
-                done={(event)=>this.continueFormHandler(event,item.id)}
+                changed={(event) => this.nameChangeHandler(event, item.id)}
+                done={(event)=>this.continueFormHandler(event, item.id)}
                 >
                   {item.information.config.placeholder}
               </Input>
@@ -298,7 +311,7 @@ class BuildRecipe extends Component {
                 key={item.id}
                 tag={item.information.tag}
                 config={item.information.fields}
-                changed={(event, index) => this.inputChangehandler(event,index, item.id)}
+                changed={(event, index) => this.multipleChangehandler(event,index, item.id)}
                 information={item.information.fields}
                 >
                   {item.information.fields}
@@ -309,55 +322,7 @@ class BuildRecipe extends Component {
               }}>
                 <button
                   type='button'>
-                  Add
-                </button>
-              </div>
-            </Aux>)
-          }
-          if (item.id === 'ingredients' && item.information.fields[1].name === 'amount' && !item.information.fields[1].touched && this.state.finished.name) {
-            console.log(item.information.fields[1]);
-            return (<Aux key={item.id}>
-              <Input
-                tag={item.information.tag}
-                config={item.information.fields[1].config}
-                value={item.information.fields[1].value}
-                changed={(event) => this.inputChangehandler(event,item.id)}
-                >
-                  {item.information.fields[1].config.placeholder}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                <button
-                  type='button'>
-                  Add
-                </button>
-              </div>
-            </Aux>)
-          }
-          if (item.id === 'ingredients' && item.information.fields[1].name === 'measurement' && !item.information.fields[2].touched && this.state.finished.name) {
-            return (<Aux key={item.id}>
-              <Input
-                tag={item.information.tag}
-                config={item.information.fields[2].config}
-                value={item.information.fields[2].value}
-                changed={(event) => this.inputChangehandler(event,item.id)}
-                >
-                  {item.information.fields[2].config.placeholder}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                <button
-                  type='button'>
-                  Add
-                </button>
-                <button
-                  onClick={(event)=>this.continueFormHandler(event,item.id)}
-                  type='button'>
-                  Save All Ingredients
+                  Add Ingredient
                 </button>
               </div>
             </Aux>)
@@ -368,7 +333,7 @@ class BuildRecipe extends Component {
                 tag={item.information.tag}
                 config={item.information.config}
                 value={item.information.value}
-                changed={(event) => this.inputChangehandler(event,item.id)}
+                changed={(event) => this.multipleChangehandler(event,item.id)}
                 >
                   {item.information.config.placeholder}
               </Input>
@@ -378,33 +343,7 @@ class BuildRecipe extends Component {
               }}>
                 <button
                   type='button'>
-                  Add
-                </button>
-              </div>
-            </Aux>)
-          }
-          if (item.id === 'designation' && !item.information.touched && this.state.finished.measurement) {
-            return (<Aux key={item.id}>
-              <Input
-                tag={item.information.tag}
-                config={item.information.config}
-                value={item.information.value}
-                changed={(event) => this.inputChangehandler(event,item.id)}
-                >
-                  {item.information.config.placeholder}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                <button
-                  type='button'>
-                  Add
-                </button>
-                <button
-                  onClick={(event)=>this.continueFormHandler(event,item.id)}
-                  type='button'>
-                  Save All Directions
+                  Add Direction
                 </button>
               </div>
             </Aux>)
@@ -425,28 +364,7 @@ class BuildRecipe extends Component {
               }}>
                 <button
                   type='button'>
-                  Add
-                </button>
-              </div>
-            </Aux>)
-          }
-          if (item.id === 'preptime' && !item.information.touched && this.state.finished.designation) {
-            return (<Aux key={item.id}>
-              <Input
-                tag={item.information.tag}
-                config={item.information.config}
-                value={item.information.value}
-                changed={(event) => this.inputChangehandler(event,item.id)}
-                >
-                  {item.information.config.placeholder}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                <button
-                  type='button'>
-                  Add
+                  Add Prep Time
                 </button>
               </div>
             </Aux>)
@@ -467,33 +385,7 @@ class BuildRecipe extends Component {
               }}>
                 <button
                   type='button'>
-                  Add
-                </button>
-              </div>
-            </Aux>)
-          }
-          if (item.id === 'cooktime' && !item.information.touched && this.state.finished.designation) {
-            return (<Aux key={item.id}>
-              <Input
-                tag={item.information.tag}
-                config={item.information.config}
-                value={item.information.value}
-                changed={(event) => this.inputChangehandler(event,item.id)}
-                >
-                  {item.information.config.placeholder}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                <button
-                  type='button'>
-                  Add
-                </button>
-                <button
-                  onClick={(event)=>this.continueFormHandler(event,item.id)}
-                  type='button'>
-                  Save times
+                  Add Cook Time
                 </button>
               </div>
             </Aux>)

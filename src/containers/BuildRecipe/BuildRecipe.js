@@ -19,16 +19,11 @@ class BuildRecipe extends Component {
           requied: true
         },
         valid: false,
-        touched: false
+        touched: false,
+        finished: false
       },
       ingredients: {
         tag: 'multiple',
-        ingredientValue: '',
-        ingredientList: [],
-        amountValue: '',
-        amountList: [],
-        measurementValue: '',
-        measurementList: [],
         fields: [
           {
            name: 'ingredient',
@@ -44,7 +39,8 @@ class BuildRecipe extends Component {
              minListLength: 3
            },
            valid: false,
-           touched: false
+           touched: false,
+           finished: false
          },
          {
            name: 'amount',
@@ -59,7 +55,8 @@ class BuildRecipe extends Component {
              require: true
            },
            valid: false,
-           touched: false
+           touched: false,
+           finished: false
          },
          {
            name: 'measurement',
@@ -84,7 +81,9 @@ class BuildRecipe extends Component {
            validation: {
              require: true
            },
-           valid: true
+           valid: true,
+           touched: true,
+           finished: false
          }
         ]
       },
@@ -105,11 +104,14 @@ class BuildRecipe extends Component {
               minListLength: 3
             },
             valid: false,
-            touched: false
+            touched: false,
+            finished: false
           },
           {
             name: 'designation',
             tag: 'select',
+            value: 'required',
+            list: [],
             config: {
               options: [
                 {value: 'required', display: 'Required'},
@@ -121,7 +123,9 @@ class BuildRecipe extends Component {
             validation: {
               require: true
             },
-            valid: true
+            valid: true,
+            touched: true,
+            finished: false
           }
         ]
       },
@@ -156,12 +160,7 @@ class BuildRecipe extends Component {
               require: true
             },
             valid: true
-          }
-        ]
-      },
-      cookInfo: {
-        tag: 'multiple',
-        fields: [
+          },
           {
             name: 'cook',
             tag: 'input',
@@ -194,6 +193,7 @@ class BuildRecipe extends Component {
         ]
       },
     },
+    valid: true,
     send: false,
     loading: false,
     finished: {
@@ -213,11 +213,9 @@ class BuildRecipe extends Component {
     newElement.value = event.target.value
     newRecipe[field] = newElement
     this.setState({recipe: newRecipe})
-    console.log(this.state.recipe.name);
   }
 
   multipleChangehandler = (event, index, field) => {
-    console.log(event, index, field);
     let newRecipe = {
       ...this.state.recipe
     }
@@ -225,30 +223,43 @@ class BuildRecipe extends Component {
       ...this.state.recipe[field]
     }
     let newValue = {
-      ...newElement.fields[index]
+      ...newElement.fields[index].value
     }
-    newValue.value = event.target.value
-    newElement.fields[index] = newValue
+    newValue = event.target.value
+    newElement.fields[index].value = newValue
     newRecipe[field] = newElement
-    console.log(newRecipe);
     this.setState({recipe: newRecipe})
-    console.log(this.state.recipe[field]);
   }
 
   continueFormHandler = (event, field) => {
     let savedRecipe = {
       ...this.state.recipe
     }
-    let savedElement = {
-      ...this.state.recipe[field]
+    let touched = {
+      ...this.state.recipe[field].touched
     }
     let finished = {
-      ...this.state.finished
+      ...this.state.recipe[field].finished
     }
-    finished[field] = true
-    savedElement.touched = true
-    savedRecipe[field] = savedElement
-    this.setState({finished: finished, recipe: savedRecipe})
+    finished = true
+    touched = true
+    savedRecipe[field].touched = touched
+    savedRecipe[field].finished = finished
+    this.setState({recipe: savedRecipe})
+  }
+
+  addInfoHandler = (event, fields, id) => {
+    fields.map((field) => {
+      let savedRecipe = {
+        ...this.state.recipe
+      }
+      field.touched = true
+      field.finished = true
+      field.list.push(field.value)
+      savedRecipe[id] = field
+      this.setState({recipe: savedRecipe})
+      console.log(this.state);
+    })
   }
 
   recipeHandler = (event) => {
@@ -303,8 +314,8 @@ class BuildRecipe extends Component {
               </div>
             </Aux>)
           }
-          if (item.id === 'ingredients' && !item.information.fields[0].touched && this.state.finished.name) {
-            console.log(item.information.fields);
+          if (item.id === 'ingredients' && this.state.recipe.name.finished) {
+            console.log(this.state.recipe.ingredients.fields[2].finished);
             return (<Aux key={item.id}>
               <h2>{this.state.recipe.name.value}</h2>
               <Input
@@ -321,29 +332,42 @@ class BuildRecipe extends Component {
                 width: '100%'
               }}>
                 <button
-                  type='button'>
+                  type='button'
+                  onClick={(event) => this.addInfoHandler(event, item.information.fields, item.id)}>
                   Add Ingredient
+                </button>
+                <button
+                  type='button'
+                  >
+                  Save Ingredients
                 </button>
               </div>
             </Aux>)
           }
-          if (item.id === 'directions' && !item.information.touched && this.state.finished.measurement) {
+          if (item.id === 'directions' && !item.information.fields[1].finished ) {
             return (<Aux key={item.id}>
               <Input
+                key={item.id}
                 tag={item.information.tag}
-                config={item.information.config}
-                value={item.information.value}
-                changed={(event) => this.multipleChangehandler(event,item.id)}
+                config={item.information.fields}
+                changed={(event, index) => this.multipleChangehandler(event,index, item.id)}
+                information={item.information.fields}
                 >
-                  {item.information.config.placeholder}
+                  {item.information.fields}
               </Input>
               <div  style={{
                 textAlign: 'center',
                 width: '100%'
               }}>
                 <button
-                  type='button'>
-                  Add Direction
+                  type='button'
+                  onClick={(event) => this.addInfoHandler(event, item.information.fields, item.id)}>
+                  Add Ingredient
+                </button>
+                <button
+                  type='button'
+                  >
+                  Save Ingredients
                 </button>
               </div>
             </Aux>)
@@ -365,27 +389,6 @@ class BuildRecipe extends Component {
                 <button
                   type='button'>
                   Add Prep Time
-                </button>
-              </div>
-            </Aux>)
-          }
-          if (item.id === 'cook' && !item.information.touched && this.state.finished.designation) {
-            return (<Aux key={item.id}>
-              <Input
-                tag={item.information.tag}
-                config={item.information.config}
-                value={item.information.value}
-                changed={(event) => this.inputChangehandler(event,item.id)}
-                >
-                  {item.information.config.placeholder}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                <button
-                  type='button'>
-                  Add Cook Time
                 </button>
               </div>
             </Aux>)

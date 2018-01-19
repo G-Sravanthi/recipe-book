@@ -7,15 +7,17 @@ import Spinner from '../../UI/Spinner'
 
 class BuildRecipe extends Component {
   state = {
+    current: 'name',
     recipe: {
       ready: [
-        {name: 'name', value: true, finished: false},
-        {name: 'ingredients', value: false, finished: false},
-        {name: 'directions', value: false, finished: false},
-        {name: 'prepInfo', value: false, finished: false},
-        {name: 'complete', value: false, finished: false}
+        {name: 'name'},
+        {name: 'ingredients'},
+        {name: 'directions'},
+        {name: 'prepInfo'},
+        {name: 'complete'}
       ],
       name: {
+        name: 'name',
         tag: 'input',
         config: {
           placeholder: 'Name of Recipe',
@@ -29,6 +31,7 @@ class BuildRecipe extends Component {
         touched: false,
       },
       ingredients: {
+        name: 'ingredients',
         tag: 'multiple',
         fields: [
           {
@@ -68,6 +71,7 @@ class BuildRecipe extends Component {
            value: 'cup(s)',
            list: [],
            config: {
+             placeholder: 'cup(s)',
              options: [
                {value: 'dash(s)', display: 'Dash(s)'},
                {value: 'pinch(s)', display: 'Pinch(s)'},
@@ -96,12 +100,12 @@ class BuildRecipe extends Component {
           {
             name: 'direction',
             tag: 'textarea',
+            value: '',
+            list: [],
             config: {
               placeholder: 'Step',
               type: 'text'
             },
-            value: '',
-            list: [],
             validation: {
               require: true,
               minListLength: 3
@@ -115,13 +119,12 @@ class BuildRecipe extends Component {
             value: 'required',
             list: [],
             config: {
+              placeholder: 'required',
               options: [
                 {value: 'required', display: 'Required'},
                 {value: 'optional', display: 'Optional'}
               ]
             },
-            value: 'required',
-            list: [],
             validation: {
               require: true
             },
@@ -136,11 +139,11 @@ class BuildRecipe extends Component {
           {
             name: 'prep',
             tag: 'input',
+            value: '',
             config: {
               placeholder: 'Prep Time',
               type: 'number'
             },
-            value: '',
             validation: {
               require: true
             },
@@ -150,13 +153,14 @@ class BuildRecipe extends Component {
           {
             name: 'preptime',
             tag: 'select',
+            value: 'minute(s)',
             config: {
+              placeholder: 'minute(s)',
               options: [
                 {value: 'minute(s)', display: 'Minute(s)'},
                 {value: 'hour(s)', display: 'Hour(s)'}
               ]
             },
-            value: 'required',
             validation: {
               require: true
             },
@@ -165,11 +169,12 @@ class BuildRecipe extends Component {
           {
             name: 'cook',
             tag: 'input',
+            value: '',
             config: {
               placeholder: 'Cook Time',
               type: 'number'
             },
-            value: '',
+
             validation: {
               require: true
             },
@@ -179,13 +184,15 @@ class BuildRecipe extends Component {
           {
             name: 'cooktime',
             tag: 'select',
+            value: 'minute(s)',
             config: {
+              placeholder: 'minute(s)',
               options: [
                 {value: 'minute(s)', display: 'Minute(s)'},
                 {value: 'hour(s)', display: 'Hour(s)'}
               ]
             },
-            value: 'required',
+
             validation: {
               require: true
             },
@@ -228,32 +235,36 @@ class BuildRecipe extends Component {
   }
 
   continueFormHandler = (event, field) => {
+    let currentStep = {
+      ...this.state.current
+    }
     let savedRecipe = {
       ...this.state.recipe
     }
     for(let i=0; i < savedRecipe.ready.length; i++) {
       if(savedRecipe.ready[i].name === field) {
-        savedRecipe.ready[i].value = false
-        savedRecipe.ready[i].finished = true
-        savedRecipe.ready[i + 1].value = true
+        currentStep = savedRecipe.ready[i + 1].name
       }
     }
-    this.setState({recipe: savedRecipe})
-    console.log(this.state.recipe);
+    this.setState({current: currentStep})
   }
 
-  addInfoHandler = (event, information, fields, id) => {
+  addInfoHandler = (event, information, group, id) => {
     let savedRecipe = {
+      ...this.state.recipe
+    }
+    let savedValue = {
       ...this.state.recipe[id]
     }
-    let component = {
-      ...this.state.component
-    }
-    fields.map((field, index) => {
-      field.list.push(field.value)
-      savedRecipe.fields[index] = field
-      this.setState({recipe: savedRecipe})
+    group.map((item, index) => {
+      console.log(item);
+      item.list.push(item.value)
+      item.value = ''
+      savedValue.fields[index] = item
     })
+    savedRecipe[id] = savedValue
+    this.setState({recipe: savedRecipe})
+    console.log(this.state.recipe);
   }
 
   recipeHandler = (event) => {
@@ -274,133 +285,120 @@ class BuildRecipe extends Component {
   }
 
   render() {
-    let recipeInfo = []
-    for(let key in this.state.recipe) {
-      recipeInfo.push({
-        id: key,
-        information: this.state.recipe[key]
-      })
-    }
-    let form = (
+    let form = null
+
+    if (this.state.current === 'name') {
+        form = (<Aux key={this.state.recipe.name.name}>
+          <Input
+            key={this.state.recipe.name.name}
+            tag={this.state.recipe.name.tag}
+            config={this.state.recipe.name.config}
+            value={this.state.recipe.name.value}
+            changed={(event) => this.nameChangeHandler(event, this.state.recipe.name.name)}
+            >
+              {this.state.recipe.name.config.placeholder}
+          </Input>
+          <div  style={{
+            textAlign: 'center',
+            width: '100%'
+          }}>
+            <button
+              onClick={(event)=>this.continueFormHandler(event,this.state.recipe.name.name)}
+              type='button'>
+              Save Recipe Name
+            </button>
+          </div>
+        </Aux>)
+      }
+      if (this.state.current === 'ingredients') {
+        form = (<Aux key={this.state.recipe.ingredients.name}>
+          <Input
+            key={this.state.recipe.ingredients.name}
+            tag={this.state.recipe.ingredients.tag}
+            config={this.state.recipe.ingredients.fields}
+            changed={(event, index) => this.multipleChangehandler(event,index, this.state.recipe.ingredients.name)}
+            information={this.state.recipe.ingredients.fields}
+            >
+              {this.state.recipe.ingredients.fields}
+          </Input>
+          <div  style={{
+            textAlign: 'center',
+            width: '100%'
+          }}>
+            <button
+              type='button'
+              onClick={(event) => this.addInfoHandler(event, this.state.recipe.ingredients, this.state.recipe.ingredients.fields, this.state.recipe.ingredients.name)}>
+              Add Ingredient
+            </button>
+            <button
+              onClick={(event)=>this.continueFormHandler(event,this.state.recipe.ingredients.name)}
+              type='button'>
+              Save Ingredients
+            </button>
+          </div>
+        </Aux>)
+      }
+      // if (item.id === 'directions' && this.state.recipe.ready[2].value && !this.state.recipe.ready[2].finished) {
+      //   form = (<Aux key={item.id}>
+      //     <Input
+      //       key={item.id}
+      //       tag={item.information.tag}
+      //       config={item.information.fields}
+      //       changed={(event, index) => this.multipleChangehandler(event,index, item.id)}
+      //       information={item.information.fields}
+      //       >
+      //         {item.information.fields}
+      //     </Input>
+      //     <div  style={{
+      //       textAlign: 'center',
+      //       width: '100%'
+      //     }}>
+      //       <button
+      //         type='button'
+      //         onClick={(event) => this.addInfoHandler(event, item.information.fields, item.id)}>
+      //         Add Ingredient
+      //       </button>
+      //       <button
+      //         onClick={(event)=>this.continueFormHandler(event,item.id)}
+      //         type='button'>
+      //         Save Directions
+      //       </button>
+      //     </div>
+      //   </Aux>)
+      // }
+      // if (item.id === 'prepInfo' && this.state.recipe.ready[3].value && !this.state.recipe.ready[3].finished) {
+      //   form = (<Aux key={item.id}>
+      //     <Input
+      //       key={item.id}
+      //       tag={item.information.tag}
+      //       config={item.information.fields}
+      //       changed={(event, index) => this.multipleChangehandler(event,index, item.id)}
+      //       information={item.information.fields}
+      //       >
+      //         {item.information.fields}
+      //     </Input>
+      //     <div  style={{
+      //       textAlign: 'center',
+      //       width: '100%'
+      //     }}>
+      //     <button
+      //       onClick={(event)=>this.continueFormHandler(event,item.id)}
+      //       type='button'>
+      //       Save Times
+      //     </button>
+      //     </div>
+      //   </Aux>)
+      // }
+      if (this.state.loading) {
+        form = (
+          <Spinner />
+        )
+      }
+    return (
       <form onSubmit={this.recipeHandler}>
-        {recipeInfo.map((item, index) => {
-          if (item.id === 'name' && this.state.recipe.ready[0].value && !this.state.recipe.ready[0].finished) {
-            return (<Aux key={item.id}>
-              <Input
-                key={item.id}
-                tag={item.information.tag}
-                config={item.information.config}
-                value={item.information.value}
-                changed={(event) => this.nameChangeHandler(event, item.id)}
-                >
-                  {item.information.config.placeholder}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                <button
-                  onClick={(event)=>this.continueFormHandler(event,item.id)}
-                  type='button'>
-                  Save Recipe Name
-                </button>
-              </div>
-            </Aux>)
-          }
-          if (item.id === 'ingredients' && this.state.recipe.ready[1].value && !this.state.recipe.ready[1].finished) {
-            return (<Aux key={item.id}>
-              <Input
-                key={item.id}
-                tag={item.information.tag}
-                config={item.information.fields}
-                changed={(event, index) => this.multipleChangehandler(event,index, item.id)}
-                information={item.information.fields}
-                >
-                  {item.information.fields}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                <button
-                  type='button'
-                  onClick={(event) => this.addInfoHandler(event, item.information, item.information.fields, item.id)}>
-                  Add Ingredient
-                </button>
-                <button
-                  onClick={(event)=>this.continueFormHandler(event,item.id)}
-                  type='button'>
-                  Save Ingredients
-                </button>
-              </div>
-            </Aux>)
-          }
-          if (item.id === 'directions' && this.state.recipe.ready[2].value && !this.state.recipe.ready[2].finished) {
-            console.log('directions', this.state.recipe.ready[2].value);
-            return (<Aux key={item.id}>
-              <Input
-                key={item.id}
-                tag={item.information.tag}
-                config={item.information.fields}
-                changed={(event, index) => this.multipleChangehandler(event,index, item.id)}
-                information={item.information.fields}
-                >
-                  {item.information.fields}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                <button
-                  type='button'
-                  onClick={(event) => this.addInfoHandler(event, item.information.fields, item.id)}>
-                  Add Ingredient
-                </button>
-                <button
-                  onClick={(event)=>this.continueFormHandler(event,item.id)}
-                  type='button'>
-                  Save Directions
-                </button>
-              </div>
-            </Aux>)
-          }
-          if (item.id === 'prepInfo' && this.state.recipe.ready[3].value && !this.state.recipe.ready[3].finished) {
-            console.log('prepInfo', this.state.recipe.ready[3].value);
-            return (<Aux key={item.id}>
-              <Input
-                key={item.id}
-                tag={item.information.tag}
-                config={item.information.fields}
-                changed={(event, index) => this.multipleChangehandler(event,index, item.id)}
-                information={item.information.fields}
-                >
-                  {item.information.fields}
-              </Input>
-              <div  style={{
-                textAlign: 'center',
-                width: '100%'
-              }}>
-              <button
-                onClick={(event)=>this.continueFormHandler(event,item.id)}
-                type='button'>
-                Save Times
-              </button>
-              </div>
-            </Aux>)
-          }
-        })}
+        {form}
         <Button>Save</Button>
       </form>
-    )
-    if (this.state.loading) {
-      form = (
-        <Spinner />
-      )
-    }
-    return (
-      <div>
-        {form}
-      </div>
     )
   }
 }

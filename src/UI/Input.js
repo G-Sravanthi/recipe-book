@@ -24,7 +24,7 @@ const input = (props) => {
                  key={item.name}
                  className={classes.Input}
                  onChange= {(e) => props.changed(e, index)}
-                 value={props.value}
+                 value={item.value}
                  placeholder={item.name}
                />)
              }

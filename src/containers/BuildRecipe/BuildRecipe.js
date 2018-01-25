@@ -82,17 +82,34 @@ class BuildRecipe extends Component {
            config: {
              placeholder: 'cup(s)',
              options: [
+               {value: 'VM', display: '---Volume Measurements---'},
                {value: 'dash(s)', display: 'Dash(s)'},
                {value: 'pinch(s)', display: 'Pinch(s)'},
                {value: 'teaspoon(s)', display: 'Teaspoon(s)'},
                {value: 'tablespoon(s)', display: 'Tablespoon(s)'},
-               {value: 'ounces(s)', display: 'Ounces(s)'},
                {value: 'cup(s)', display: 'Cup(s)'},
                {value: 'pint(s)', display: 'Pint(s)'},
                {value: 'litter(s)', display: 'Litters(s)'},
                {value: 'quart(s)', display: 'Quart(s)'},
                {value: 'gallon(s)', display: 'Gallon(s)'},
-               {value: 'custom', display: 'Custom'},
+               {value: 'WM', display: '---Weight Measurements---'},
+               {value: 'gram(s)', display: 'Gram(s)'},
+               {value: 'ounces(s)', display: 'Ounces(s)'},
+               {value: 'pound(s)', display: 'Pound(s)'},
+               {value: 'SM', display: '---Specialty Measurements---'},
+               {value: 'bunch(s)', display: 'Bunch(s)'},
+               {value: 'slice(s)', display: 'Slice(s)'},
+               {value: 'stick(s)', display: 'Stick(s)'},
+               {value: 'handful(s)', display: 'Handful(s)'},
+               {value: 'clove(s)', display: 'Clove(s)'},
+               {value: 'package(s)', display: 'Package(s)'},
+               {value: 'steak(s)', display: 'Steak(s)'},
+               {value: 'breast(s)', display: 'Breast(s)'},
+               {value: 'thigh(s)', display: 'Thigh(s)'},
+               {value: 'link(s)', display: 'Link(s)'},
+               {value: 'patty(s)', display: 'Patty(s)'},
+               {value: 'unit(s)', display: 'Unit(s)'},
+               {value: 'other', display: 'Other'},
              ]
            }
          }
@@ -225,6 +242,9 @@ class BuildRecipe extends Component {
       ...newElement.fields[index].value
     }
     newValue = event.target.value
+    if (newValue === 'VM' || newValue === 'WM' || newValue === 'SM') {
+      newValue = ''
+    }
     if (newValue !== '') {
       valueEntered = true
     } else {
@@ -279,7 +299,6 @@ class BuildRecipe extends Component {
         }
       }
     } else {
-      return
       console.log('not valid');
     }
   }
@@ -316,7 +335,6 @@ class BuildRecipe extends Component {
         }
       }
     } else {
-      return
       console.log('not valid');
     }
     console.log(this.state);
@@ -343,13 +361,18 @@ class BuildRecipe extends Component {
     group.map((item, index) => {
       if (valid) {
         item.list.push(item.value)
-        item.value = ''
         item.touched = false
         item.saved = true
         savedValue.fields[index] = item
         savedRecipe[id] = savedValue
         this.setState({recipe: savedRecipe})
+        if(item.tag === 'select') {
+          item.value = item.config.options[0].value
+        }else{
+          item.value = ''
+        }
       }
+      console.log(item.value);
     })
     console.log(group);
   }

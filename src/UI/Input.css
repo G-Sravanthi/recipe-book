@@ -34,7 +34,7 @@
 .Select {
   font-size: 14px;
   background: #BCBCBC;
-  text-align: center;
+  text-align-last:center;
   width: 30%;
   height: 40px;
   margin: 2vh auto;

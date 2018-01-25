@@ -37,13 +37,14 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  // switch (expression) {
-  //   case expression:
-  //
-  //     break;
-  //   default:
+  switch (action.type) {
+    case actionsTypes.AddedItem:
+      return {
+        ...state
+      }
+    default:
       return state
-  // }
+  }
 }
 
 export default reducer

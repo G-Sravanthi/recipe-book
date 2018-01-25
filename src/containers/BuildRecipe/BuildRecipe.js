@@ -1,9 +1,13 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import axios from 'axios'
+import * as actionsTypes from '../../store/actions'
 import Aux from '../../HOC/Aux'
 import Input from '../../UI/Input'
 import Button from '../../UI/Button'
 import Spinner from '../../UI/Spinner'
+
+const recipeBuilder = {}
 
 class BuildRecipe extends Component {
   state = {
@@ -147,6 +151,7 @@ class BuildRecipe extends Component {
             config: {
               placeholder: 'required',
               options: [
+                {value: 'DD', display: '---Direction Designation---'},
                 {value: 'required', display: 'Required'},
                 {value: 'optional', display: 'Optional'}
               ]
@@ -184,6 +189,7 @@ class BuildRecipe extends Component {
             config: {
               placeholder: 'minute(s)',
               options: [
+                {value: 'PT', display: '---Unit of Time---'},
                 {value: 'minute(s)', display: 'Minute(s)'},
                 {value: 'hour(s)', display: 'Hour(s)'}
               ]
@@ -215,6 +221,7 @@ class BuildRecipe extends Component {
             config: {
               placeholder: 'minute(s)',
               options: [
+                {value: 'CT', display: '---Unit of Time---'},
                 {value: 'minute(s)', display: 'Minute(s)'},
                 {value: 'hour(s)', display: 'Hour(s)'}
               ]
@@ -242,7 +249,7 @@ class BuildRecipe extends Component {
       ...newElement.fields[index].value
     }
     newValue = event.target.value
-    if (newValue === 'VM' || newValue === 'WM' || newValue === 'SM') {
+    if (newValue === 'VM' || newValue === 'WM' || newValue === 'SM' || newValue === 'DD') {
       newValue = ''
     }
     if (newValue !== '') {
@@ -372,35 +379,26 @@ class BuildRecipe extends Component {
           item.value = ''
         }
       }
-      console.log(item.value);
     })
-    console.log(group);
+    this.props.onAddedItem(savedRecipe)
   }
 
   recipeHandler = (event) => {
     event.preventDefault()
     this.setState({loading: true})
     const recipe = {}
-    recipe.recipeName = []
-    recipe.recipeIngredients = []
-    recipe.recipeDirections = []
-    recipe.recipePrepInfo = []
-    const name = {name: this.state.recipe.name.fields[0].value}
-    const ingredients = {ingredients: this.state.recipe.ingredients.fields[0].list}
-    const amounts = {amounts: this.state.recipe.ingredients.fields[1].list}
-    const measurements = {measurements: this.state.recipe.ingredients.fields[2].list}
-    const directions = {directions: this.state.recipe.directions.fields[0].list}
-    const designations = {designations: this.state.recipe.directions.fields[1].list}
-    const prep = {prep: this.state.recipe.prepInfo.fields[0].value}
-    const preptime = {preptime: this.state.recipe.prepInfo.fields[1].value}
-    const cook = {cook: this.state.recipe.prepInfo.fields[2].value}
-    const cooktime = {cooktime: this.state.recipe.prepInfo.fields[3].value}
-    recipe.recipeName.push(name)
-    recipe.recipeIngredients.push(ingredients, amounts, measurements)
-    recipe.recipeDirections.push(directions, designations)
-    recipe.recipePrepInfo.push(prep, preptime, cook, cooktime)
-    console.log(recipe);
-    axios.post('https://recipe-builder-7bfb0.firebaseio.com/recipes.json', recipe)
+    recipeBuilder.name = {list: this.state.recipe.name.fields[0].value}
+    recipeBuilder.ingredient = {list: this.state.recipe.ingredients.fields[0].list}
+    recipeBuilder.amount = {list: this.state.recipe.ingredients.fields[1].list}
+    recipeBuilder.measurement = {list: this.state.recipe.ingredients.fields[2].list}
+    recipeBuilder.direction = {list: this.state.recipe.directions.fields[0].list}
+    recipeBuilder.designation = {list: this.state.recipe.directions.fields[1].list}
+    recipeBuilder.prep = {list: this.state.recipe.prepInfo.fields[0].value}
+    recipeBuilder.preptime = {list: this.state.recipe.prepInfo.fields[1].value}
+    recipeBuilder.cook = {list: this.state.recipe.prepInfo.fields[2].value}
+    recipeBuilder.cooktime = {list: this.state.recipe.prepInfo.fields[3].value}
+    console.log(recipeBuilder);
+    axios.post('https://recipe-builder-7bfb0.firebaseio.com/recipes.json', recipeBuilder)
       .then(response => {
         this.setState({loading: false})
         this.props.history.push('/')
@@ -528,4 +526,26 @@ class BuildRecipe extends Component {
     )
   }
 }
-export default BuildRecipe
+
+const mapStateToProps = state => {
+  return {
+    name: state.recipe.name,
+    ingredient: state.recipe.ingredient,
+    amount: state.recipe.amount,
+    measurement: state.recipe.measurement,
+    direction: state.recipe.direction,
+    designation: state.recipe.designation,
+    prep: state.recipe.prep,
+    preptime: state.recipe.preptime,
+    cook: state.recipe.cook,
+    cooktime: state.recipe.cooktime,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddedItem: (itemList) => dispatch({type: actionsTypes.AddedItem, newList: itemList})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BuildRecipe)

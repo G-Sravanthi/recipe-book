@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
 import axios from 'axios'
-import * as actionsTypes from '../../store/actions'
+import DirectionList from '../../components/DirectionList/DirectionList'
+import IngredientList from '../../components/IngredientList/IngredientList'
 import Aux from '../../HOC/Aux'
 import Input from '../../UI/Input'
 import Button from '../../UI/Button'
@@ -380,24 +380,42 @@ class BuildRecipe extends Component {
         }
       }
     })
-    this.props.onAddedItem(savedRecipe)
   }
 
   recipeHandler = (event) => {
     event.preventDefault()
     this.setState({loading: true})
-    const recipe = {}
-    recipeBuilder.name = {list: this.state.recipe.name.fields[0].value}
-    recipeBuilder.ingredient = {list: this.state.recipe.ingredients.fields[0].list}
-    recipeBuilder.amount = {list: this.state.recipe.ingredients.fields[1].list}
-    recipeBuilder.measurement = {list: this.state.recipe.ingredients.fields[2].list}
-    recipeBuilder.direction = {list: this.state.recipe.directions.fields[0].list}
-    recipeBuilder.designation = {list: this.state.recipe.directions.fields[1].list}
-    recipeBuilder.prep = {list: this.state.recipe.prepInfo.fields[0].value}
-    recipeBuilder.preptime = {list: this.state.recipe.prepInfo.fields[1].value}
-    recipeBuilder.cook = {list: this.state.recipe.prepInfo.fields[2].value}
-    recipeBuilder.cooktime = {list: this.state.recipe.prepInfo.fields[3].value}
-    console.log(recipeBuilder);
+    let ingredientsLogged = []
+    let directionsLogged = []
+    for (let i = 0; i < this.state.recipe.ingredients.fields[0].list.length; i++) {
+      let ingredient = this.state.recipe.ingredients.fields[0].list[i]
+      let amount = this.state.recipe.ingredients.fields[1].list[i]
+      let measurement = this.state.recipe.ingredients.fields[2].list[i]
+      let ingredientGroup = {
+        ingredient,
+        amount,
+        measurement
+      }
+      ingredientsLogged.push(ingredientGroup)
+    }
+    for (let i = 0; i < this.state.recipe.directions.fields[0].list.length; i++) {
+      let direction = this.state.recipe.directions.fields[0].list[i]
+      let designation = this.state.recipe.directions.fields[1].list[i]
+      let directionGroup = {
+        direction,
+        designation
+      }
+      directionsLogged.push(directionGroup)
+    }
+    recipeBuilder.recipeName = {name: this.state.recipe.name.fields[0].value}
+    recipeBuilder.recipeIngredients = ingredientsLogged
+    recipeBuilder.recipeDirections = directionsLogged
+    recipeBuilder.recipeTimes = {
+      prep: this.state.recipe.prepInfo.fields[0].value,
+      preptime: this.state.recipe.prepInfo.fields[1].value,
+      cook: this.state.recipe.prepInfo.fields[2].value,
+      cooktime: this.state.recipe.prepInfo.fields[3].value
+    }
     axios.post('https://recipe-builder-7bfb0.firebaseio.com/recipes.json', recipeBuilder)
       .then(response => {
         this.setState({loading: false})
@@ -409,7 +427,12 @@ class BuildRecipe extends Component {
   }
 
   render() {
+
     let form = null
+    let button = null
+    let name = null
+    let listOfIngredients = null
+    let listOfDirections = null
 
     if (this.state.current === 'name') {
         form = (<Aux key={this.state.recipe.name.name}>
@@ -518,34 +541,45 @@ class BuildRecipe extends Component {
           <Spinner />
         )
       }
+      if (this.state.recipe.prepInfo.valid && !this.state.loading) {
+        button = (
+          <Button>Save</Button>
+        )
+      }
+      if (this.state.recipe.name.fields[0].value !== '' && !this.state.loading) {
+        name = (
+          <div style={{
+            height: '10px',
+            textAlign: 'center'
+          }}>
+          {this.state.recipe.name.fields[0].value}
+        </div>
+        )
+      }
+      if (this.state.recipe.ingredients.fields[2].list.length > 0 && !this.state.loading) {
+        listOfIngredients = (
+          <IngredientList
+            information={recipeBuilder}
+          />
+        )
+      }
+      if (this.state.recipe.directions.fields[1].list.length > 0 && !this.state.loading) {
+        listOfDirections = (
+          <DirectionList
+            information={recipeBuilder}
+          />
+        )
+      }
     return (
       <form onSubmit={this.recipeHandler}>
         {form}
-        <Button>Save</Button>
+        {name}
+        {listOfIngredients}
+        {listOfDirections}
+        {button}
       </form>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    name: state.recipe.name,
-    ingredient: state.recipe.ingredient,
-    amount: state.recipe.amount,
-    measurement: state.recipe.measurement,
-    direction: state.recipe.direction,
-    designation: state.recipe.designation,
-    prep: state.recipe.prep,
-    preptime: state.recipe.preptime,
-    cook: state.recipe.cook,
-    cooktime: state.recipe.cooktime,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onAddedItem: (itemList) => dispatch({type: actionsTypes.AddedItem, newList: itemList})
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(BuildRecipe)
+export default BuildRecipe

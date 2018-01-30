@@ -1,12 +1,17 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import Recipe from '../../components/Recipe/Recipe'
+import Spinner from '../../UI/Spinner'
 
 class RecipeList extends Component {
   state = {
-  recipes: []
-}
+    recipes: [],
+    loading: false
+  }
   componentDidMount() {
+    this.setState({
+      loading: true
+    })
     axios.get('https://recipe-builder-7bfb0.firebaseio.com/recipes.json')
     .then(res => {
       let recipesArray = []
@@ -16,30 +21,35 @@ class RecipeList extends Component {
           id: key
         })
       }
-      this.setState({recipes: recipesArray})
-      console.log(this.state.recipes);
+      this.setState({recipes: recipesArray, loading: false})
     })
     .catch( err => {
-      this.setState({loading: false})
+      this.setState({recipes: err, loading: false})
       console.log(err);
     })
   }
   render() {
-    return (
-      <div>
-        {this.state.recipes.map((recipe) => {
-          console.log(recipe);
+    let list = (
+        this.state.recipes.map((recipe) => {
           return (
-          <Recipe
-            key={recipe.id}
-            name={recipe.recipeName}
-            ingredients={recipe.recipeIngredients}
-            directions={recipe.recipeDirections}
-            time={recipe.recipeTimes}
-          />
-        )
-      })}
-    </div>
+            <Recipe
+              key={recipe.id}
+              id={recipe.id}
+              name={recipe.recipeName}
+              ingredients={recipe.recipeIngredients}
+              directions={recipe.recipeDirections}
+              time={recipe.recipeTimes}
+            />
+          )
+        })
+      )
+    if(this.state.loading) {
+      list = <Spinner />
+    }
+    return (
+      <div style={{display: 'flex'}}>
+        {list}
+      </div>
     )
   }
 }

@@ -235,6 +235,12 @@ class BuildRecipe extends Component {
     loading: false,
   }
 
+  onKeyPress(event) {
+    if (event.which === 13) {
+      event.preventDefault();
+    }
+  }
+
   multipleChangehandler = (event, index, field) => {
     let newRecipe = {
       ...this.state.recipe
@@ -571,7 +577,10 @@ class BuildRecipe extends Component {
         )
       }
     return (
-      <form onSubmit={this.recipeHandler}>
+      <form
+        onSubmit={this.recipeHandler}
+        onKeyPress={this.onKeyPress}
+      >
         {form}
         {name}
         {listOfIngredients}

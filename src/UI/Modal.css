@@ -1,0 +1,9 @@
+.Modal {
+  background: grey;
+  position: fixed;
+  z-index: 500;
+}
+.Info{
+  margin: 0 auto;
+  overflow-y: scroll;
+}

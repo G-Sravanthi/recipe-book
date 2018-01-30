@@ -1,0 +1,16 @@
+.Recipe {
+  text-transform: capitalize;
+  text-align: center;
+  width: 20%;
+  height: 200px;
+  background: #F2F2F2;
+  border: 1px solid #D11A3B;
+  border-radius: 5px;
+  margin: 1em;
+  padding: 0 1em 1em 1em;
+}
+
+.Recipe:hover {
+  background: #E45954;
+  border: 1px solid #5E829B;
+}

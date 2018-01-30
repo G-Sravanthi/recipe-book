@@ -17,6 +17,13 @@
 
 .Button:hover{
   border: solid 1px  #E5CD3B;
-  background-color: RGBA(205, 180, 80, 1.00);
+  background-color: RGBA(205, 180, 80, .8);
   color: RGBA(40, 70, 75, 1.00);
+}
+@media (max-width: 730px) {
+  .Button {
+    border: solid 1px  #E5CD3B;
+    background-color: RGBA(205, 180, 80, .5);
+    color: RGBA(40, 70, 75, 1.00);
+  }
 }

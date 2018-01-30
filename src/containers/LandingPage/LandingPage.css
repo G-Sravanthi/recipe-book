@@ -5,27 +5,149 @@
   background-size: 100%;
   background-image: url('../../assets/kitchen.jpg');
 }
-
-@@keyframes links {
+@@keyframes message {
   from {opacity: 0;}
   to {opacity: 1;}
 }
-@-webkit-keyframes links {
+@-webkit-keyframes message {
   from {opacity: 0;}
   to {opacity: 1;}
+}
+.First {
+  color: RGBA(40, 70, 75, 1.00);
+  text-align: center;
+  font-size: 100px;
+  font-family: 'Poiret One', cursive;
+  background-color: RGBA(187, 180, 163, .4);
+  opacity: 0;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: message;
+  -webkit-animation-duration: 3s;
+}
+.Second {
+  color: RGBA(40, 70, 75, 1.00);
+  text-align: center;
+  font-size: 100px;
+  font-family: 'Poiret One', cursive;
+    background-color: RGBA(187, 180, 163, .4);
+  opacity: 0;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: message;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-delay: 1s;
+}
+.Third {
+  color: RGBA(40, 70, 75, 1.00);
+  text-align: center;
+  font-size: 100px;
+  font-family: 'Poiret One', cursive;
+    background-color: RGBA(187, 180, 163, .4);
+  opacity: 0;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: message;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-delay: 2s;
+}
+.FirstMobile {
+  color: RGBA(40, 70, 75, 1.00);
+  display: none;
+  text-align: center;
+  font-size: 50px;
+  font-family: 'Poiret One', cursive;
+  background-color: RGBA(187, 180, 163, .4);
+  opacity: 0;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: message;
+  -webkit-animation-duration: 3s;
+}
+.SecondMobile {
+  color: RGBA(40, 70, 75, 1.00);
+  display: none;
+  text-align: center;
+  font-size: 50px;
+  font-family: 'Poiret One', cursive;
+    background-color: RGBA(187, 180, 163, .4);
+  opacity: 0;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: message;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-delay: 1s;
+}
+.ThirdMobile {
+  color: RGBA(40, 70, 75, 1.00);
+  display: none;
+  text-align: center;
+  font-size: 50px;
+  font-family: 'Poiret One', cursive;
+    background-color: RGBA(187, 180, 163, .4);
+  opacity: 0;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: message;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-delay: 2s;
+}
+.FourthMobile {
+  color: RGBA(40, 70, 75, 1.00);
+  display: none;
+  text-align: center;
+  font-size: 50px;
+  font-family: 'Poiret One', cursive;
+    background-color: RGBA(187, 180, 163, .4);
+  opacity: 0;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: message;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-delay: 3s;
 }
 .Links {
   color: #5ADDFC;
   display: inline-block;
   border: solid 1px #5ADDFC;
   border-radius: 5px;
-  opacity: 0;
-  -webkit-animation-fill-mode: forwards;
-  animation-name: links;
-  animation-duration: 4s;
-  animation-delay: 5s;
 }
-
-.Links:hover {
-
+@media (max-width: 1080px) {
+  .Landing {
+    background-position: 25% 25%;
+    background-size: 200vh auto;
+  }
+}
+@media (max-width: 730px) {
+  .First{
+    opacity: 1;
+    font-size: 70px;
+    -webkit-animation-name: none;
+  }
+  .Second{
+    opacity: 1;
+    font-size: 70px;
+    -webkit-animation-name: none;
+  }
+  .Third{
+    opacity: 1;
+    font-size: 70px;
+    -webkit-animation-name: none;
+  }
+}
+@media (max-width: 515px) {
+  .First{
+    display: none;
+  }
+  .Second{
+    display: none;
+  }
+  .Third{
+    display: none;
+  }
+  .FirstMobile{
+    display: block;
+  }
+  .SecondMobile{
+    display: block;
+  }
+  .ThirdMobile{
+    display: block;
+  }
+  .FourthMobile{
+    display: block;
+  }
 }

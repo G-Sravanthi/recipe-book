@@ -5,14 +5,14 @@
   height: 10em;
 }
 .loader {
-  margin: 60px auto;
+  margin: 30vh auto;
   font-size: 10px;
   position: relative;
   text-indent: -9999em;
-  border-top: 1.1em solid rgba(119,232,255, 0.2);
-  border-right: 1.1em solid rgba(119,232,255, 0.2);
-  border-bottom: 1.1em solid rgba(119,232,255, 0.2);
-  border-left: 1.1em solid #77e8ff;
+  border-top: 1.1em solid RGBA(146, 211, 237, 1.00);
+  border-right: 1.1em solid RGBA(146, 211, 237, 1.00);
+  border-bottom: 1.1em solid RGBA(146, 211, 237, 1.00);
+  border-left: 1.1em solid RGBA(80, 143, 162, .8);
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);

@@ -1,12 +1,15 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+import Aux from '../../HOC/Aux'
+import classes from './RecipeList.css'
 import Recipe from '../../components/Recipe/Recipe'
 import Spinner from '../../UI/Spinner'
 
 class RecipeList extends Component {
   state = {
     recipes: [],
-    loading: false
+    loading: false,
+    menu: false
   }
   componentDidMount() {
     this.setState({
@@ -28,6 +31,17 @@ class RecipeList extends Component {
       console.log(err);
     })
   }
+  menuHandler = () => {
+
+    this.setState({menu: !this.state.menu})
+
+  }
+  homeHandler = () => {
+    this.props.history.push('/')
+  }
+  buildHandler = () => {
+    this.props.history.push('/build-recipe')
+  }
   render() {
     let list = (
         this.state.recipes.map((recipe) => {
@@ -46,10 +60,41 @@ class RecipeList extends Component {
     if(this.state.loading) {
       list = <Spinner />
     }
+    let menu = null
+    if (this.state.menu) {
+      menu = (
+        <Aux>
+          <p
+            onClick={this.homeHandler}
+            className={classes.Link}>
+            <strong>Home</strong>
+          </p>
+          <p
+            onClick={this.buildHandler}
+            className={classes.Link}>
+            <strong>Build Recipe</strong>
+          </p>
+        </Aux>
+      )
+    }
     return (
-      <div style={{display: 'flex'}}>
-        {list}
-      </div>
+      <main className={classes.Main}>
+        <div className={classes.Menu}>
+          <i
+            style={{
+              cursor: 'pointer',
+              color: 'RGBA(80, 143, 162, 1.00)'
+            }}
+            onClick={this.menuHandler}
+            className="fa fa-bars fa-2x"
+            aria-hidden="true">
+          </i>
+            {menu}
+        </div>
+        <ul className={classes.List}>
+          {list}
+        </ul>
+      </main>
     )
   }
 }

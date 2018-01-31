@@ -27,16 +27,29 @@ class Recipe extends Component {
     })
   }
   render () {
+    console.log();
     let recipe = (
-      <div
+      <li className={classes.Recipe}
         className={classes.Recipe}
         onClick={this.openModalHandler}>
-        <h3>{this.props.name.name}</h3>
-        <p>Prep Time</p>
-        <h4>{this.props.time.prep} {this.props.time.preptime}</h4>
-        <p>Cook Time</p>
-        <h4>{this.props.time.cook} {this.props.time.cooktime}</h4>
-      </div>
+        <h3 className={classes.Title}>{this.props.name.name}</h3>
+        <div>
+          <p className={classes.Description}><strong>Ingredients Needed:</strong></p>
+          <h4 className={classes.Input}>{this.props.ingredients.length}</h4>
+        </div>
+        <div>
+          <p className={classes.Description}><strong>Steps Required:</strong></p>
+          <h4 className={classes.Input}>{this.props.directions.length}</h4>
+        </div>
+        <div className={classes.Container}>
+          <p className={classes.Description}><strong>Prep Time:</strong></p>
+          <h4 className={classes.Input}>{this.props.time.prep} {this.props.time.preptime}</h4>
+        </div>
+        <div>
+          <p className={classes.Description}><strong>Cook Time:</strong></p>
+          <h4 className={classes.Input}>{this.props.time.cook} {this.props.time.cooktime}</h4>
+        </div>
+      </li>
     )
     if(this.state.viewing) {
       recipe= (

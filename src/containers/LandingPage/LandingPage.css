@@ -1,11 +1,4 @@
-.Landing {
-  width: 100vw;
-  height: 100vh;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-image: url('../../assets/kitchen.jpg');
-}
-@@keyframes message {
+@keyframes message {
   from {opacity: 0;}
   to {opacity: 1;}
 }
@@ -104,12 +97,6 @@
   display: inline-block;
   border: solid 1px #5ADDFC;
   border-radius: 5px;
-}
-@media (max-width: 1080px) {
-  .Landing {
-    background-position: 25% 25%;
-    background-size: 200vh auto;
-  }
 }
 @media (max-width: 730px) {
   .First{

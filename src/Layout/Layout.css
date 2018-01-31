@@ -1,2 +1,13 @@
 .Layout {
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-image: url('../assets/kitchen.jpg');
+}
+@media (max-width: 1080px) {
+  .Layout {
+    background-position: 25% 25%;
+    background-size: 200vh auto;
+  }
 }

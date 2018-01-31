@@ -5,28 +5,17 @@ import Button from '../../UI/Button'
 import classes from './LandingPage.css'
 
 class LandingPage extends Component {
-  state = {
-    visited: true
-  }
-  // componentDidMount = () => {
-  //   setTimeout(() => {
-  //     this.setState({visited: true})
-  //   }, 5000)
-  // }
   render() {
-    let landing = null
-    if(this.state.visited) {
-      landing = (
-        <div styl={{display: 'block'}}>
-          <Link to='/recipe-list'>
-            <Button className={classes.Links} bsSize="large" bsStyle="link"><strong>Recipe List</strong></Button>
-          </Link>
-          <Link to='/build-recipe'>
-            <Button className={classes.Links} bsSize="large" bsStyle="link"><strong>Build Recipe</strong></Button>
-          </Link>
-        </div>
-      )
-    }
+    let landing = (
+      <div styl={{display: 'block'}}>
+        <Link to='/recipe-list'>
+          <Button className={classes.Links} bsSize="large" bsStyle="link"><strong>Recipe List</strong></Button>
+        </Link>
+        <Link to='/build-recipe'>
+          <Button className={classes.Links} bsSize="large" bsStyle="link"><strong>Build Recipe</strong></Button>
+        </Link>
+      </div>
+    )
     return (
       <main className={classes.Landing}>
         <div className={classes.First}>Create a Recipe</div>

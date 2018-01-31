@@ -549,7 +549,9 @@ class BuildRecipe extends Component {
       }
       if (this.state.recipe.prepInfo.valid && !this.state.loading) {
         button = (
-          <Button>Save</Button>
+          <Button clicked={this.recipeHandler}>
+            Save
+          </Button>
         )
       }
       if (this.state.recipe.name.fields[0].value !== '' && !this.state.loading) {

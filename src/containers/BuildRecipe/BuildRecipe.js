@@ -348,6 +348,18 @@ class BuildRecipe extends Component {
         console.log('typeof issue');
         valid = false
       }
+      if(item.list.length > 0 && item.value === '') {
+        valid = true
+        validity.valid = valid
+        for(let i=0; i < savedRecipe.ready.length; i++) {
+          if(savedRecipe.ready[i].name === id) {
+            currentStep = savedRecipe.ready[i + 1].name
+            savedRecipe[id] = validity
+            this.setState({current: currentStep, recipe: savedRecipe})
+            return console.log(this.state);
+          }
+        }
+      }
     })
     validity.valid = valid
     if (validity.valid) {

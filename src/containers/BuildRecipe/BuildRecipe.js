@@ -6,11 +6,13 @@ import Aux from '../../HOC/Aux'
 import Input from '../../UI/Input'
 import Button from '../../UI/Button'
 import Spinner from '../../UI/Spinner'
+import classes from './BuildRecipe.css'
 
 const recipeBuilder = {}
 
 class BuildRecipe extends Component {
   state = {
+    menu: false,
     current: 'name',
     recipe: {
       ready: [
@@ -86,7 +88,7 @@ class BuildRecipe extends Component {
            config: {
              placeholder: 'cup(s)',
              options: [
-               {value: 'VM', display: '---Volume Measurements---'},
+               {value: 'VM', display: 'Volume Measurements'},
                {value: 'dash(s)', display: 'Dash(s)'},
                {value: 'pinch(s)', display: 'Pinch(s)'},
                {value: 'teaspoon(s)', display: 'Teaspoon(s)'},
@@ -96,11 +98,11 @@ class BuildRecipe extends Component {
                {value: 'litter(s)', display: 'Litters(s)'},
                {value: 'quart(s)', display: 'Quart(s)'},
                {value: 'gallon(s)', display: 'Gallon(s)'},
-               {value: 'WM', display: '---Weight Measurements---'},
+               {value: 'WM', display: 'Weight Measurements'},
                {value: 'gram(s)', display: 'Gram(s)'},
                {value: 'ounces(s)', display: 'Ounces(s)'},
                {value: 'pound(s)', display: 'Pound(s)'},
-               {value: 'SM', display: '---Specialty Measurements---'},
+               {value: 'SM', display: 'Specialty Measurements'},
                {value: 'bunch(s)', display: 'Bunch(s)'},
                {value: 'slice(s)', display: 'Slice(s)'},
                {value: 'stick(s)', display: 'Stick(s)'},
@@ -240,7 +242,17 @@ class BuildRecipe extends Component {
       event.preventDefault();
     }
   }
+  menuHandler = () => {
 
+    this.setState({menu: !this.state.menu})
+
+  }
+  homeHandler = () => {
+    this.props.history.push('/')
+  }
+  listHandler = () => {
+    this.props.history.push('/recipe-list')
+  }
   multipleChangehandler = (event, index, field) => {
     let newRecipe = {
       ...this.state.recipe
@@ -442,6 +454,10 @@ class BuildRecipe extends Component {
 
     if (this.state.current === 'name') {
         form = (<Aux key={this.state.recipe.name.name}>
+          <h3 style={{
+            margin: '10px 0',
+            color: '#508FA2'
+          }}>Name of Recipe</h3>
           <Input
             key={this.state.recipe.name.name}
             tag={this.state.recipe.name.tag}
@@ -455,16 +471,20 @@ class BuildRecipe extends Component {
             textAlign: 'center',
             width: '100%'
           }}>
-            <button
-              onClick={(event)=>this.continueWithFormHandler(event, this.state.recipe.name.fields, this.state.recipe.name.name)}
+            <Button
+              clicked={(event)=>this.continueWithFormHandler(event, this.state.recipe.name.fields, this.state.recipe.name.name)}
               type='button'>
-              Save Recipe Name
-            </button>
+              Save
+            </Button>
           </div>
         </Aux>)
       }
       if (this.state.current === 'ingredients') {
         form = (<Aux key={this.state.recipe.ingredients.name}>
+          <h3 style={{
+            margin: '10px 0',
+            color: '#508FA2'
+          }}>Recipe Ingredient</h3>
           <Input
             key={this.state.recipe.ingredients.name}
             tag={this.state.recipe.ingredients.tag}
@@ -478,21 +498,25 @@ class BuildRecipe extends Component {
             textAlign: 'center',
             width: '100%'
           }}>
-            <button
+            <Button
               type='button'
-              onClick={(event) => this.addInfoHandler(event, this.state.recipe.ingredients, this.state.recipe.ingredients.fields, this.state.recipe.ingredients.name)}>
-              Add Ingredient
-            </button>
-            <button
-              onClick={(event)=>this.continueFillingFormHandler(event, this.state.recipe.ingredients, this.state.recipe.ingredients.fields, this.state.recipe.ingredients.name)}
+              clicked={(event) => this.addInfoHandler(event, this.state.recipe.ingredients, this.state.recipe.ingredients.fields, this.state.recipe.ingredients.name)}>
+              Add
+            </Button>
+            <Button
+              clicked={(event)=>this.continueFillingFormHandler(event, this.state.recipe.ingredients, this.state.recipe.ingredients.fields, this.state.recipe.ingredients.name)}
               type='button'>
-              Save Ingredients
-            </button>
+              Save
+            </Button>
           </div>
         </Aux>)
       }
       if (this.state.current === 'directions') {
         form = (<Aux key={this.state.recipe.directions.name}>
+          <h3 style={{
+            margin: '10px 0',
+            color: '#508FA2'
+          }}>Recipe Direction</h3>
           <Input
             key={this.state.recipe.directions.name}
             tag={this.state.recipe.directions.tag}
@@ -506,21 +530,25 @@ class BuildRecipe extends Component {
             textAlign: 'center',
             width: '100%'
           }}>
-            <button
+            <Button
               type='button'
-              onClick={(event) => this.addInfoHandler(event, this.state.recipe.directions, this.state.recipe.directions.fields, this.state.recipe.directions.name)}>
-              Add Direction
-            </button>
-            <button
-              onClick={(event)=>this.continueFillingFormHandler(event, this.state.recipe.directions, this.state.recipe.directions.fields, this.state.recipe.directions.name)}
+              clicked={(event) => this.addInfoHandler(event, this.state.recipe.directions, this.state.recipe.directions.fields, this.state.recipe.directions.name)}>
+              Add
+            </Button>
+            <Button
+              clicked={(event)=>this.continueFillingFormHandler(event, this.state.recipe.directions, this.state.recipe.directions.fields, this.state.recipe.directions.name)}
               type='button'>
-              Save Directions
-            </button>
+              Save
+            </Button>
           </div>
         </Aux>)
       }
       if (this.state.current === 'prepInfo') {
         form = (<Aux key={this.state.recipe.prepInfo.name}>
+          <h3 style={{
+            margin: '10px 0',
+            color: '#508FA2'
+          }}>Rcipe Times</h3>
           <Input
             key={this.state.recipe.prepInfo.name}
             tag={this.state.recipe.prepInfo.tag}
@@ -534,11 +562,11 @@ class BuildRecipe extends Component {
             textAlign: 'center',
             width: '100%'
           }}>
-          <button
-            onClick={(event)=>this.continueWithFormHandler(event,this.state.recipe.prepInfo.fields, this.state.recipe.prepInfo.name)}
+          <Button
+            clicked={(event)=>this.continueWithFormHandler(event,this.state.recipe.prepInfo.fields, this.state.recipe.prepInfo.name)}
             type='button'>
-            Save Times
-          </button>
+            Save
+          </Button>
           </div>
         </Aux>)
       }
@@ -550,45 +578,82 @@ class BuildRecipe extends Component {
       if (this.state.recipe.prepInfo.valid && !this.state.loading) {
         button = (
           <Button clicked={this.recipeHandler}>
-            Save
+            Save All
           </Button>
         )
       }
-      if (this.state.recipe.name.fields[0].value !== '' && !this.state.loading) {
-        name = (
-          <div style={{
-            height: '10px',
-            textAlign: 'center'
-          }}>
-          {this.state.recipe.name.fields[0].value}
-        </div>
-        )
-      }
-      if (this.state.recipe.ingredients.fields[2].list.length > 0 && !this.state.loading) {
-        listOfIngredients = (
-          <IngredientList
-            information={recipeBuilder}
-          />
-        )
-      }
-      if (this.state.recipe.directions.fields[1].list.length > 0 && !this.state.loading) {
-        listOfDirections = (
-          <DirectionList
-            information={recipeBuilder}
-          />
+      // if (this.state.recipe.name.fields[0].value !== '' && !this.state.loading) {
+      //   name = (
+      //     <div style={{
+      //       height: '10px',
+      //       textAlign: 'center'
+      //     }}>
+      //     {this.state.recipe.name.fields[0].value}
+      //   </div>
+      //   )
+      // }
+      // if (this.state.recipe.ingredients.fields[2].list.length > 0 && !this.state.loading) {
+      //   listOfIngredients = (
+      //     <IngredientList
+      //       information={recipeBuilder}
+      //     />
+      //   )
+      // }
+      // if (this.state.recipe.directions.fields[1].list.length > 0 && !this.state.loading) {
+      //   listOfDirections = (
+      //     <DirectionList
+      //       information={recipeBuilder}
+      //     />
+      //   )
+      // }
+      let menu = null
+      if (this.state.menu) {
+        menu = (
+          <Aux>
+            <p
+              onClick={this.homeHandler}
+              className={classes.Link}>
+              <strong>Home</strong>
+            </p>
+            <p
+              onClick={this.listHandler}
+              className={classes.Link}>
+              <strong>Build Recipe</strong>
+            </p>
+          </Aux>
         )
       }
     return (
-      <form
-        onSubmit={this.recipeHandler}
-        onKeyPress={this.onKeyPress}
-      >
-        {form}
-        {name}
-        {listOfIngredients}
-        {listOfDirections}
-        {button}
-      </form>
+      <main className={classes.Main}>
+        <div className={classes.Menu}>
+          <i
+            style={{
+              cursor: 'pointer',
+              color: 'RGBA(80, 143, 162, 1.00)'
+            }}
+            onClick={this.menuHandler}
+            className="fa fa-bars fa-2x"
+            aria-hidden="true">
+          </i>
+            {menu}
+        </div>
+        <section className={classes.Info}>
+          <form
+            className={classes.Form}
+            onSubmit={this.recipeHandler}
+            onKeyPress={this.onKeyPress}
+          >
+            {form}
+            {/* {name}
+            {listOfIngredients}
+            {listOfDirections} */}
+            {button}
+          </form>
+          <div className={classes.Form}>
+            hey
+          </div>
+        </section>
+      </main>
     )
   }
 }

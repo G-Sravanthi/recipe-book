@@ -22,7 +22,7 @@ const input = (props) => {
               if (item.tag === 'textarea') {
                return (<textarea
                  key={item.name}
-                 className={classes.Input}
+                 className={classes.TextArea}
                  onChange= {(e) => props.changed(e, index)}
                  value={item.value}
                  placeholder={item.name}

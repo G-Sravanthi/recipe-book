@@ -1,0 +1,76 @@
+.Main {
+  font-family: 'Rubik', sans-serif;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom right,RGBA(75, 82, 99, 1.00),RGBA(40, 44, 52, 1.00));
+}
+.Info {
+  height: 90vh;
+  width: 90vw;
+  margin: 0 auto;
+  text-align: center;
+}
+.Form {
+  height: 90%;
+  width: 350px;
+  overflow: scroll;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 25px 20px;
+  padding: 5px 40px 25px 40px;
+  border-radius: 10px;
+  filter: drop-shadow(0 3px 15px RGBA(15, 16, 17, 1.00));
+  background: linear-gradient(to bottom right,RGBA(30, 60, 65, 1.00),RGBA(40, 70, 75, 1.00));
+}
+.Title {
+  margin: none;
+}
+.Menu {
+  color:RGBA(40, 70, 75, 1.00);
+  display: block;
+  padding: 10px 10px;
+  -webkit-transition: color 1s;
+}
+.Link{
+  font-size: 13px;
+  padding: 0 40px;
+  margin: auto 10px;
+  color: RGBA(80, 143, 162, 1.00);
+  font-family: 'Rubik', sans-serif;
+  display: inline-block;
+  -webkit-transition: color 1s;
+}
+.Link:hover{
+  cursor: pointer;
+  color: RGBA(146, 211, 237, 1.00);
+}
+
+@media (max-width: 867px) {
+  .Form {
+    height: 90%;
+    width: 300px;
+    margin: 20px;
+    padding: 20px;
+  }
+}
+@media (max-width: 756px) {
+  .Form {
+    height: 50%;
+    width: 80%;
+    margin: 0 5px 10px 5px;
+    padding: 5px 30px 15px 30px;
+  }
+}
+@media (max-width: 430px) {
+  .Form {
+    height: 50%;
+    width: 250px;
+    margin: 0 5px 5px 5px;
+    padding: 5px 15px 15px 15px;
+  }
+}
+@media (max-width: 390px) {
+  .Link {
+    padding: 0 20px;
+  }
+}

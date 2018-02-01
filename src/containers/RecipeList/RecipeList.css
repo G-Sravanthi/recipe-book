@@ -1,7 +1,7 @@
 .Main {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(to bottom right,RGBA(246, 246, 246, 1.00),RGBA(191, 189, 191, 1.00));
+  background: linear-gradient(to bottom right,RGBA(75, 82, 99, 1.00),RGBA(40, 44, 52, 1.00));
 }
 .Menu {
   color:RGBA(40, 70, 75, 1.00);
@@ -15,6 +15,7 @@
   color: RGBA(80, 143, 162, 1.00);
   font-family: 'Rubik', sans-serif;
   display: inline-block;
+  -webkit-transition: color 1s;
 }
 .Link:hover{
   cursor: pointer;
@@ -34,7 +35,7 @@
 }
 @media (max-width: 425px) {
   .List {
-    background: linear-gradient(to bottom right,RGBA(246, 246, 246, 1.00),RGBA(191, 189, 191, 1.00));
+    background: linear-gradient(to bottom right,RGBA(75, 82, 99, 1.00),RGBA(40, 44, 52, 1.00));
   }
 }
 @media (max-width: 390px) {

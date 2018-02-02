@@ -22,6 +22,10 @@
   color: RGBA(146, 211, 237, 1.00);
 }
 .List {
+  overflow: scroll;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom right,RGBA(75, 82, 99, 1.00),RGBA(40, 44, 52, 1.00));
   padding: 0;
   margin: 0;
   list-style: none;

@@ -1,17 +1,18 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import DirectionList from '../../components/DirectionList/DirectionList'
-import IngredientList from '../../components/IngredientList/IngredientList'
+// import RecipeOutput from '../../components/RecipeOutput/RecipeOutput'
 import Aux from '../../HOC/Aux'
 import Input from '../../UI/Input'
 import Button from '../../UI/Button'
 import Spinner from '../../UI/Spinner'
+import Modal from '../../UI/Modal'
 import classes from './BuildRecipe.css'
 
 const recipeBuilder = {}
 
 class BuildRecipe extends Component {
   state = {
+    error: false,
     menu: false,
     current: 'name',
     recipe: {
@@ -247,11 +248,14 @@ class BuildRecipe extends Component {
     this.setState({menu: !this.state.menu})
 
   }
-  homeHandler = () => {
-    this.props.history.push('/')
-  }
+  // homeHandler = () => {
+  //   this.props.history.push('/')
+  // }
   listHandler = () => {
     this.props.history.push('/recipe-list')
+  }
+  modalClose = () => {
+    this.setState({error: false})
   }
   multipleChangehandler = (event, index, field) => {
     let newRecipe = {
@@ -296,20 +300,20 @@ class BuildRecipe extends Component {
       if (item.name === 'prep' || item.name === 'cook') {
         let check = parseInt(item.value)
         if(!item.touched) {
-          console.log('touched issue');
+          this.setState({error: true})
           valid = false
         }
         if(typeof check !== item.type) {
-          console.log('typeof issue', typeof item.value, item.type);
+        this.setState({error: true})
           valid = false
         }
       } else {
         if(!item.touched) {
-          console.log('touched issue');
+          this.setState({error: true})
           valid = false
         }
         if(typeof item.value !== item.type) {
-          console.log('typeof issue', typeof item.value, item.type);
+          this.setState({error: true})
           valid = false
         }
       }
@@ -341,12 +345,13 @@ class BuildRecipe extends Component {
     let valid = true
     group.map((item) => {
       if(!item.touched) {
-        console.log('touched issue');
         valid = false
+        this.setState({error: true})
+        console.log(this.state);
       }
       if(typeof item.value !== item.type) {
-        console.log('typeof issue');
         valid = false
+        this.setState({error: true})
       }
       if(item.list.length > 0 && item.value === '') {
         valid = true
@@ -387,11 +392,11 @@ class BuildRecipe extends Component {
     let valid = true
     group.map((item) => {
       if(!item.touched) {
-        console.log('touched issue');
+        this.setState({error: true})
         valid = false
       }
       if(typeof item.value !== item.type) {
-        console.log('typeof issue');
+        this.setState({error: true})
         valid = false
       }
     })
@@ -461,8 +466,9 @@ class BuildRecipe extends Component {
     let form = null
     let button = null
     let name = null
-    let listOfIngredients = null
-    let listOfDirections = null
+    let ingredients = null
+    let directions = null
+    let time = null
 
     if (this.state.current === 'name') {
         form = (<Aux key={this.state.recipe.name.name}>
@@ -587,6 +593,13 @@ class BuildRecipe extends Component {
           <Spinner />
         )
       }
+      if (this.state.recipe.name.valid && !this.state.loading) {
+        name = this.state.recipe.name.fields[0].value
+      }
+      if (this.state.recipe.ingredients.fields[0].list.length > 0 && !this.state.loading) {
+        let list = this.state.recipe.ingredients.fields[0].list
+        list.map
+      }
       if (this.state.recipe.prepInfo.valid && !this.state.loading) {
         button = (
           <Button clicked={this.recipeHandler}>
@@ -594,49 +607,87 @@ class BuildRecipe extends Component {
           </Button>
         )
       }
-      // if (this.state.recipe.name.fields[0].value !== '' && !this.state.loading) {
-      //   name = (
-      //     <div style={{
-      //       height: '10px',
-      //       textAlign: 'center'
-      //     }}>
-      //     {this.state.recipe.name.fields[0].value}
-      //   </div>
-      //   )
-      // }
-      // if (this.state.recipe.ingredients.fields[2].list.length > 0 && !this.state.loading) {
-      //   listOfIngredients = (
-      //     <IngredientList
-      //       information={recipeBuilder}
-      //     />
-      //   )
-      // }
-      // if (this.state.recipe.directions.fields[1].list.length > 0 && !this.state.loading) {
-      //   listOfDirections = (
-      //     <DirectionList
-      //       information={recipeBuilder}
-      //     />
-      //   )
-      // }
+
       let menu = null
       if (this.state.menu) {
         menu = (
           <Aux>
-            <p
+            {/* <p
               onClick={this.homeHandler}
               className={classes.Link}>
               <strong>Home</strong>
-            </p>
+            </p> */}
             <p
               onClick={this.listHandler}
               className={classes.Link}>
-              <strong>Build Recipe</strong>
+              <strong>List of Recipes</strong>
             </p>
+          </Aux>
+        )
+      }
+      let errorMessage = null
+      if (this.state.error) {
+        errorMessage = (
+          <div style={{
+            position: 'absolute',
+            zIndex: '100',
+            height: '100vh',
+            width: '100vw',
+            background: 'RGBA(75, 82, 99, .7)'
+          }}>
+            <div style={{
+              textAlign: 'center',
+              margin: '30% 25%',
+              width: '50%',
+              fontSize: '20px',
+              borderRadius: '5px',
+              filter: 'drop-shadow(0 3px 5px RGBA(15, 16, 17, 1.00))',
+              background: '#92D3ED',
+              color: '#28464B',
+              padding: '20px'
+            }}>
+              <div
+                style={{
+                  cursor: 'pointer',
+                  float: 'right',
+                  background: '#508FA2',
+                  color: '#28464B',
+                  padding: '0 5px',
+                  borderRadius: '2px'
+              }}
+                onClick={this.modalClose}>
+                X
+              </div>
+                <p style={{display:'inline-block'}}>
+                  This section is partially incomplete
+                </p>
+            </div>
+          </div>
+        )
+      }
+      if (this.state.recipe.name.valid) {
+        ingredients = (
+          <h4 style={{color: '#508FA2'}}>Ingredients</h4>
+        )
+      }
+      if (this.state.recipe.ingredients.valid) {
+        directions = (
+          <h4 style={{color: '#508FA2'}}>Directions</h4>
+        )
+      }
+      if (this.state.recipe.directions.valid) {
+        time = (
+          <Aux>
+            <h4 style={{color: '#508FA2'}}>Prep Time</h4>
+            <p style={{color: '#92D3ED', margin: '0'}}>{this.state.recipe.prepInfo.fields[0].value} {this.state.recipe.prepInfo.fields[1].value}</p>
+            <h4 style={{color: '#508FA2'}}>Cook Time</h4>
+            <p style={{color: '#92D3ED', margin: '0'}}>{this.state.recipe.prepInfo.fields[2].value} {this.state.recipe.prepInfo.fields[3].value}</p>
           </Aux>
         )
       }
     return (
       <main className={classes.Main}>
+        {errorMessage}
         <div className={classes.Menu}>
           <i
             style={{
@@ -656,13 +707,19 @@ class BuildRecipe extends Component {
             onKeyPress={this.onKeyPress}
           >
             {form}
-            {/* {name}
-            {listOfIngredients}
-            {listOfDirections} */}
             {button}
           </form>
           <div className={classes.Form}>
-            hey
+            <h3 style={{color: '#92D3ED'}}>{name}</h3>
+            {ingredients}
+            {this.state.recipe.ingredients.fields[0].list.map((item, index) => {
+              return <p key={index} style={{color: '#92D3ED', margin: '0'}}>{item}</p>
+            })}
+            {directions}
+            {this.state.recipe.directions.fields[0].list.map((item, index) => {
+              return <p key={index} style={{color: '#92D3ED', margin: '0'}}>{item}</p>
+            })}
+            {time}
           </div>
         </section>
       </main>

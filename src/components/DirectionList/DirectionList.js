@@ -9,13 +9,7 @@ const DirectionList = (props) => {
       textAlign: 'center',
       width: '80%'
     }}>
-    {/* {props.information.map((item, index) => {
-      <Direction
-        key={index}
-        direction = {item.direction}
-        designation = {item.designation}
-      />
-    })} */}
+
     </div>
   )
 }

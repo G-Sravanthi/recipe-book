@@ -36,9 +36,9 @@ class RecipeList extends Component {
     this.setState({menu: !this.state.menu})
 
   }
-  homeHandler = () => {
-    this.props.history.push('/')
-  }
+  // homeHandler = () => {
+  //   this.props.history.push('/')
+  // }
   buildHandler = () => {
     this.props.history.push('/build-recipe')
   }
@@ -64,15 +64,15 @@ class RecipeList extends Component {
     if (this.state.menu) {
       menu = (
         <Aux>
-          <p
+          {/* <p
             onClick={this.homeHandler}
             className={classes.Link}>
             <strong>Home</strong>
-          </p>
+          </p> */}
           <p
             onClick={this.buildHandler}
             className={classes.Link}>
-            <strong>Build Recipe</strong>
+            <strong>Build a Recipe</strong>
           </p>
         </Aux>
       )

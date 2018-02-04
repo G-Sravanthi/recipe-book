@@ -3,13 +3,18 @@ import axios from 'axios'
 import Aux from '../../HOC/Aux'
 import classes from './RecipeList.css'
 import Recipe from '../../components/Recipe/Recipe'
+import Modal from '../../UI/Modal'
 import Spinner from '../../UI/Spinner'
+
+let recipe = []
 
 class RecipeList extends Component {
   state = {
     recipes: [],
     loading: false,
-    menu: false
+    menu: false,
+    modal: false,
+    recipeID: null
   }
   componentDidMount() {
     this.setState({
@@ -27,20 +32,31 @@ class RecipeList extends Component {
       this.setState({recipes: recipesArray, loading: false})
     })
     .catch( err => {
-      this.setState({recipes: err, loading: false})
+      this.setState({loading: false})
       console.log(err);
     })
   }
   menuHandler = () => {
-
     this.setState({menu: !this.state.menu})
-
   }
-  // homeHandler = () => {
-  //   this.props.history.push('/')
-  // }
   buildHandler = () => {
     this.props.history.push('/build-recipe')
+  }
+  openModal = (e, info) => {
+    console.log(info.id);
+    this.setState({modal: true, recipeID: info.id})
+    recipe = info
+    console.log(recipe);
+  }
+  closeModal = () => {
+    this.setState({modal: false})
+    recipe = []
+  }
+  startRecipeHandler = () => {
+    this.props.history.push({
+      pathname: '/start-recipe',
+      search: '?recipeID=' + this.state.recipeID
+    })
   }
   render() {
     let list = (
@@ -49,6 +65,7 @@ class RecipeList extends Component {
             <Recipe
               key={recipe.id}
               id={recipe.id}
+              clicked = {(e, info) => this.openModal(e, info)}
               name={recipe.recipeName}
               ingredients={recipe.recipeIngredients}
               directions={recipe.recipeDirections}
@@ -64,17 +81,26 @@ class RecipeList extends Component {
     if (this.state.menu) {
       menu = (
         <Aux>
-          {/* <p
-            onClick={this.homeHandler}
-            className={classes.Link}>
-            <strong>Home</strong>
-          </p> */}
           <p
             onClick={this.buildHandler}
             className={classes.Link}>
             <strong>Build a Recipe</strong>
           </p>
         </Aux>
+      )
+    }
+    let recipeModal = null
+    if (this.state.modal) {
+      recipeModal = (
+        <Modal
+          name = {recipe.name}
+          ingredients = {recipe.ingredients}
+          directions = {recipe.directions}
+          time = {recipe.time}
+          clicked = {this.startRecipeHandler}
+          close = {this.closeModal}
+          start = {this.startRecipeHandler}
+        />
       )
     }
     return (
@@ -91,6 +117,7 @@ class RecipeList extends Component {
           </i>
             {menu}
         </div>
+        {recipeModal}
         <ul className={classes.List}>
           {list}
         </ul>

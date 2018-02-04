@@ -1,9 +1,28 @@
-.Modal {
-  background: grey;
-  position: fixed;
-  z-index: 500;
+.Filter {
+  overflow:  scroll;
+  position: absolute;
+  z-index: 100;
+  height: 100vh;
+  width: 100vw;
+  background: RGBA(75, 82, 99, .7);
 }
-.Info{
-  margin: 0 auto;
-  overflow-y: scroll;
+.CloseButton {
+  text-align: center;
+  margin: 25px auto;
+  width: 80%;
+  font-size: 20px;
+  border-radius: 5px;
+  filter: drop-shadow(0 3px 5px RGBA(15, 16, 17, 1.00));
+  background: #92D3ED;
+  color: #28464B;
+  padding: 20px;
+}
+.Close {
+  cursor: pointer;
+  float: right;
+  background: #508FA2;
+  color: #28464B;
+  padding: 0 5px;
+  border: solid 1px #28464B; 
+  border-radius: 2px;
 }

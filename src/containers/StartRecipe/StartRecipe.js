@@ -6,8 +6,10 @@ let recipeID = null
 
 class StartRecipe extends Component {
   state = {
-    recipe: [],
-    loading: false
+    name: '',
+    ingredients: [],
+    directions: [],
+    time: ''
   }
   componentWillMount = () => {
     const query = new URLSearchParams(this.props.location.search)
@@ -32,8 +34,14 @@ class StartRecipe extends Component {
           id: key
         })
       }
-      this.setState({recipe: recipesArray, loading: false})
-      console.log(this.state.recipe);
+      console.log(recipesArray);
+      this.setState({
+        name: recipesArray[2].name,
+        ingredients: recipesArray[1],
+        directions: recipesArray[0],
+        time: recipesArray[3],
+        loading: false})
+      console.log(this.state.directions);
     })
     .catch( err => {
       this.setState({recipe: err, loading: false})
@@ -41,13 +49,15 @@ class StartRecipe extends Component {
     })
   }
   render() {
-    let recipeInfo = <div>HI</div>
+  let recipeInfo = (
+    <h2>hi</h2>
+  )
     if(this.state.loading) {
       recipeInfo = <Spinner />
     }
     return (
       <div>
-        {recipeInfo}
+        {this.state.name}
       </div>
     )
   }

@@ -116,7 +116,7 @@ class BuildRecipe extends Component {
                {value: 'link(s)', display: 'Link(s)'},
                {value: 'patty(s)', display: 'Patty(s)'},
                {value: 'unit(s)', display: 'Unit(s)'},
-               {value: 'other', display: 'Other'},
+               {value: '(other)', display: '(Other)'},
              ]
            }
          }
@@ -653,6 +653,7 @@ class BuildRecipe extends Component {
                   background: '#508FA2',
                   color: '#28464B',
                   padding: '0 5px',
+                  border: 'solid 1px #28464B',
                   borderRadius: '2px'
               }}
                 onClick={this.modalClose}>

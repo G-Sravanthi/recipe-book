@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+import CheckBox from '../../UI/CheckBox'
 import Spinner from '../../UI/Spinner'
 
 let recipeID = null
@@ -9,7 +10,8 @@ class StartRecipe extends Component {
     name: '',
     ingredients: [],
     directions: [],
-    time: ''
+    time: '',
+    check: false
   }
   componentWillMount = () => {
     const query = new URLSearchParams(this.props.location.search)
@@ -48,6 +50,9 @@ class StartRecipe extends Component {
       console.log(err);
     })
   }
+  checkHandler = () => {
+    this.setState({check: !this.state.check})
+  }
   render() {
   let recipeInfo = (
     <h2>hi</h2>
@@ -56,9 +61,12 @@ class StartRecipe extends Component {
       recipeInfo = <Spinner />
     }
     return (
-      <div>
-        {this.state.name}
-      </div>
+      <main>
+        <CheckBox
+          check={this.state.check}
+          clicked={this.checkHandler}
+        />
+      </main>
     )
   }
 }

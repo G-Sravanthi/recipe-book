@@ -5,7 +5,7 @@ import classes from './RecipeList.css'
 import Recipe from '../../components/Recipe/Recipe'
 import Modal from '../../UI/Modal'
 import Spinner from '../../UI/Spinner'
-
+import CheckBox from '../../UI/CheckBox'
 let recipe = []
 
 class RecipeList extends Component {
@@ -14,7 +14,8 @@ class RecipeList extends Component {
     loading: false,
     menu: false,
     modal: false,
-    recipeID: null
+    recipeID: null,
+    check: false
   }
   componentDidMount() {
     this.setState({

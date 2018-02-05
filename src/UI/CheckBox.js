@@ -33,7 +33,7 @@ class CheckBox extends Component{
           {check}
         </div>
         <div className={classes.Input}>
-          Chicken Pot Pie
+          {this.props.info.ingredient}{this.props.info.amount}{this.props.info.measurement}
         </div>
       </div>
     )

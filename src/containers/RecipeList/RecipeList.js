@@ -5,7 +5,7 @@ import classes from './RecipeList.css'
 import Recipe from '../../components/Recipe/Recipe'
 import Modal from '../../UI/Modal'
 import Spinner from '../../UI/Spinner'
-import CheckBox from '../../UI/CheckBox'
+
 let recipe = []
 
 class RecipeList extends Component {
@@ -106,15 +106,14 @@ class RecipeList extends Component {
     }
     return (
       <main className={classes.Main}>
-        <div className={classes.Menu}>
+        <div className={classes.Menu} onClick={this.menuHandler}>
           <i
             style={{
               cursor: 'pointer',
               color: 'RGBA(80, 143, 162, 1.00)'
             }}
-            onClick={this.menuHandler}
-            className="fa fa-bars fa-2x"
-            aria-hidden="true">
+
+            className="fas fa-bars fa-2x">
           </i>
             {menu}
         </div>

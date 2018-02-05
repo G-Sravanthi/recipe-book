@@ -689,15 +689,13 @@ class BuildRecipe extends Component {
     return (
       <main className={classes.Main}>
         {errorMessage}
-        <div className={classes.Menu}>
+        <div className={classes.Menu} onClick={this.menuHandler}>
           <i
             style={{
               cursor: 'pointer',
               color: 'RGBA(80, 143, 162, 1.00)'
             }}
-            onClick={this.menuHandler}
-            className="fa fa-bars fa-2x"
-            aria-hidden="true">
+            className="fas fa-bars fa-2x">
           </i>
             {menu}
         </div>

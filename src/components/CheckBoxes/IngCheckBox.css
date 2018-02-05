@@ -1,16 +1,18 @@
 .CheckBox {
-  width: 90%
+  overflow: scroll;
+  width: 90%;
+  margin: 0 auto;
 }
 .Input {
   vertical-align: middle;
   display: inline-block;
   width: 90%;
-  height: 40px;
   border: solid 1px #92D3ED;
   border-radius: 5px;
   background: #508FA2;
   color: #28464B;
   filter: drop-shadow(0 3px 5px RGBA(15, 16, 17, .5));
+    margin: 10px 0;
   padding: 6px 0 0 10px;
   font-size: 20px;
 }

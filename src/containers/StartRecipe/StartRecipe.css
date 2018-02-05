@@ -1,0 +1,28 @@
+.Menu {
+  color:RGBA(40, 70, 75, 1.00);
+  display: block;
+  padding: 10px 10px;
+}
+.Link{
+  font-size: 13px;
+  padding: 0 40px;
+  margin: auto 10px;
+  color: RGBA(80, 143, 162, 1.00);
+  font-family: 'Rubik', sans-serif;
+  display: inline-block;
+  -webkit-transition: color 1s;
+}
+.Link:hover{
+  cursor: pointer;
+  color: RGBA(146, 211, 237, 1.00);
+}
+.Main {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom right,RGBA(75, 82, 99, 1.00),RGBA(40, 44, 52, 1.00));
+}
+@media (max-width: 390px) {
+  .Link {
+    padding: 0 20px;
+  }
+}

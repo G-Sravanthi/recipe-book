@@ -11,7 +11,7 @@ class StartRecipe extends Component {
     ingredients: [],
     directions: [],
     time: '',
-    check: false
+    checked: []
   }
   componentWillMount = () => {
     const query = new URLSearchParams(this.props.location.search)
@@ -36,7 +36,6 @@ class StartRecipe extends Component {
           id: key
         })
       }
-      console.log(recipesArray);
       this.setState({
         name: recipesArray[2].name,
         ingredients: recipesArray[1],
@@ -50,8 +49,11 @@ class StartRecipe extends Component {
       console.log(err);
     })
   }
-  checkHandler = () => {
-    this.setState({check: !this.state.check})
+  completionHandler = (info) => {
+    console.log(info);
+    let checkCompleted = {
+      ...this.state.checked.push(info)}
+      console.log(this.state.checked);
   }
   render() {
   let recipeInfo = (
@@ -63,8 +65,7 @@ class StartRecipe extends Component {
     return (
       <main>
         <CheckBox
-          check={this.state.check}
-          clicked={this.checkHandler}
+          completion={(info) => this.completionHandler(info)}
         />
       </main>
     )

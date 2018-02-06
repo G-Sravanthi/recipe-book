@@ -132,7 +132,7 @@ class StartRecipe extends Component {
     if(!this.state.loading && this.state.ingComplete) {
       recipeInfo = (
         <div style={{overflow: 'scroll', height: '100vh'}}>
-          <h2 style={{textAlign: 'center', color: '#92D3ED'}}>Step by Step Direction</h2>
+          <h2 style={{textAlign: 'center', color: '#92D3ED'}}>Step by Step Directions</h2>
           {this.state.directions[0].map((item, index) => {
             return (
               <DirCheckBox
@@ -152,19 +152,21 @@ class StartRecipe extends Component {
       recipeInfo = <Spinner />
     }
     return (
-      <main className={classes.Main}>
-        <div className={classes.Menu} onClick={this.menuHandler}>
-          <i
-            style={{
-              cursor: 'pointer',
-              color: 'RGBA(80, 143, 162, 1.00)'
-            }}
-            className="fas fa-bars fa-2x">
-          </i>
-            {menu}
-        </div>
-        {recipeInfo}
-      </main>
+      <Aux>
+        <main className={classes.Main}>
+          <div className={classes.Menu} onClick={this.menuHandler}>
+            <i
+              style={{
+                cursor: 'pointer',
+                color: 'RGBA(80, 143, 162, 1.00)'
+              }}
+              className="fas fa-bars fa-2x">
+            </i>
+              {menu}
+          </div>
+          {recipeInfo}
+        </main>
+      </Aux>
     )
   }
 }

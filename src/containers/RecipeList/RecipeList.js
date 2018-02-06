@@ -61,20 +61,28 @@ class RecipeList extends Component {
   }
   render() {
     let list = (
-        this.state.recipes.map((recipe) => {
-          return (
-            <Recipe
-              key={recipe.id}
-              id={recipe.id}
-              clicked = {(e, info) => this.openModal(e, info)}
-              name={recipe.recipeName}
-              ingredients={recipe.recipeIngredients}
-              directions={recipe.recipeDirections}
-              time={recipe.recipeTimes}
-            />
-          )
-        })
+      <div>
+        <h3 style={{textAlign: 'center', color: '#508FA2', margin: '140px 0'}}>No Recipes Found</h3>
+        <h1 style={{textAlign: 'center', color: '#92D3ED', cursor: 'pointer'}} onClick={this.buildHandler}>Build A Recipe?</h1>
+      </div>
       )
+      if(this.state.recipes.length > 0) {
+        list = (
+          this.state.recipes.map((recipe) => {
+            return (
+              <Recipe
+                key={recipe.id}
+                id={recipe.id}
+                clicked = {(e, info) => this.openModal(e, info)}
+                name={recipe.recipeName}
+                ingredients={recipe.recipeIngredients}
+                directions={recipe.recipeDirections}
+                time={recipe.recipeTimes}
+              />
+            )
+          })
+        )
+      }
     if(this.state.loading) {
       list = <Spinner />
     }

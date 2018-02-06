@@ -454,7 +454,7 @@ class BuildRecipe extends Component {
     axios.post('https://recipe-builder-7bfb0.firebaseio.com/recipes.json', recipeBuilder)
       .then(response => {
         this.setState({loading: false})
-        this.props.history.push('/')
+        this.props.history.push('/recipe-list')
       })
       .catch(err => {
         console.log(err);
@@ -666,17 +666,17 @@ class BuildRecipe extends Component {
           </div>
         )
       }
-      if (this.state.recipe.name.valid) {
+      if (this.state.current === 'ingredients' || this.state.current === 'directions' || this.state.current === 'prepInfo') {
         ingredients = (
           <h4 style={{color: '#508FA2'}}>Ingredients</h4>
         )
       }
-      if (this.state.recipe.ingredients.valid) {
+      if (this.state.current === 'directions' || this.state.current === 'prepInfo') {
         directions = (
           <h4 style={{color: '#508FA2'}}>Directions</h4>
         )
       }
-      if (this.state.recipe.directions.valid) {
+      if (this.state.current === 'prepInfo') {
         time = (
           <Aux>
             <h4 style={{color: '#508FA2'}}>Prep Time</h4>
@@ -716,7 +716,7 @@ class BuildRecipe extends Component {
             })}
             {directions}
             {this.state.recipe.directions.fields[0].list.map((item, index) => {
-              return <p key={index} style={{color: '#92D3ED', margin: '0'}}>{item}</p>
+              return <p key={index} style={{color: '#92D3ED', margin: '10px 0', textAlign: 'left'}}>{item}</p>
             })}
             {time}
           </div>
